@@ -54,7 +54,6 @@ object KMPAlgorithm {
 
       }
     }
- 		// This comment has been added again
     return S.length()
   }                                               //> kmpAlgorithm: ()Int
 	S.length()                                //> res0: Int = 11

@@ -28,7 +28,7 @@ object KMPAlgorithm {;import org.scalaide.worksheet.runtime.library.WorksheetSup
       }
 
     }
-  };System.out.println("""calculateTheTable: ()Unit""");$skip(589); 
+  };System.out.println("""calculateTheTable: ()Unit""");$skip(549); 
 
   def kmpAlgorithm(): Int = {
     calculateTheTable()
@@ -53,7 +53,6 @@ object KMPAlgorithm {;import org.scalaide.worksheet.runtime.library.WorksheetSup
 
       }
     }
- 		// This comment has been added again
     return S.length()
   };System.out.println("""kmpAlgorithm: ()Int""");$skip(12); val res$0 = 
 	S.length();System.out.println("""res0: Int = """ + $show(res$0));$skip(17); val res$1 = 
