@@ -1,4 +1,4 @@
-package greeter
+package in.algorithms
 
 object Sheet {
   /** Square Root Algo **/

@@ -1,4 +1,4 @@
-package greeter
+package in.algorithms
 
 object Palindrome {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet

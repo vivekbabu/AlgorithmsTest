@@ -1,4 +1,4 @@
-package greeter
+package in.algorithms
 
 object Hello extends App {
   def and(x: Boolean, y: Boolean): Boolean = {

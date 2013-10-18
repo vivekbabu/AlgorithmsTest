@@ -1,4 +1,4 @@
-package greeter
+package in.algorithms
 
 object Sheet {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; def main(args: Array[String])=$execute{;$skip(124); 
   /** Square Root Algo **/
