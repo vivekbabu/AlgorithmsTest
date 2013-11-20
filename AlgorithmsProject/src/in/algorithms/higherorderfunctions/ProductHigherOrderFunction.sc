@@ -1,13 +1,17 @@
 package in.algorithms
 
+import scala.annotation.tailrec
+
 object ProductHigherOrderFunction {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
 
   def id(x: Int) = x                              //> id: (x: Int)Int
   def cube(x: Int) = x * x * x                    //> cube: (x: Int)Int
   def square(x: Int) = x * x                      //> square: (x: Int)Int
+
   def fact(x: Int): Int = {
     //if(x==1) 1 else x * fact(x-1)
+    @tailrec
     def factWithLoop(x: Int, acc: Int): Int = {
       if (x == 1) acc else factWithLoop(x - 1, acc * x)
     }
