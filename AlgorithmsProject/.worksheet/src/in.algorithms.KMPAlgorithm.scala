@@ -1,12 +1,12 @@
 package in.algorithms
 
 object KMPAlgorithm {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; def main(args: Array[String])=$execute{;$skip(88); 
-  println("Welcome to the Scala worksheet");$skip(213); 
+  println("Welcome to the Scala worksheet");$skip(214); 
 
   //  var S = "ABC ABCDAB ABCDABCDABDE" // The string
   //  var W = "ABCDABD" // The pattern to match
   //  var T = new Array[Int](W.length()) // The computed substing table
-  var S = "AAAAAAAAAAA";System.out.println("""S  : String = """ + $show(S ));$skip(43);  // The string
+  var S = "AAAAAAAAAAA ";System.out.println("""S  : String = """ + $show(S ));$skip(43);  // The string
   var W = "AAAAAB";System.out.println("""W  : String = """ + $show(W ));$skip(68);  // The pattern to match
   var T = new Array[Int](W.length());System.out.println("""T  : Array[Int] = """ + $show(T ));$skip(22);  // The computed substing table
   var comparisons = 0;System.out.println("""comparisons  : Int = """ + $show(comparisons ));$skip(335); 
