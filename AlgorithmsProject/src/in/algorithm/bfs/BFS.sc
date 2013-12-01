@@ -4,7 +4,6 @@ import scala.collection.Map
 import scala.collection.Set
 object BFS {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
-  //val buf = scala.collection.mutable.HashMap
 
   var graph = Map(0 -> Set[Int](1),
     1 -> Set[Int](2),
