@@ -9,11 +9,11 @@ class WeatherData extends Observable {
     this.temperature = temp
     this.humidity = hum
     this.pressure = press
-    measurementsChanged()
+    measurementsChanged
   }
 
   def measurementsChanged(): Unit = {
-    setChanged()
-    notifyObservers()
+    setChanged
+    notifyObservers
   }
 }
