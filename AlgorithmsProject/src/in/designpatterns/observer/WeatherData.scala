@@ -12,7 +12,7 @@ class WeatherData extends Observable {
     measurementsChanged
   }
 
-  def measurementsChanged(): Unit = {
+  def measurementsChanged = {
     setChanged
     notifyObservers
   }
