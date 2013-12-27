@@ -1,4 +1,4 @@
-package in.designpatterns.observer
+package in.designpatterns.scala.observer
 
 class ChangeDisplayElement(observable: Observable) extends DisplayElement with Observer {
   var temperature: Float = _

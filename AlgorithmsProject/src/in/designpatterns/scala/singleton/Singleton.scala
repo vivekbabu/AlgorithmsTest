@@ -1,4 +1,4 @@
-package in.designpatterns.singleton
+package in.designpatterns.scala.singleton
 
 object Singleton {
 

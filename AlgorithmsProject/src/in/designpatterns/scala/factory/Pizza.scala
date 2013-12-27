@@ -1,5 +1,5 @@
-package in.designpatterns.factory
-import in.designpatterns.factory.ingredients._
+package in.designpatterns.scala.factory
+import in.designpatterns.scala.factory.ingredients._
 trait Pizza {
   var dough: Dough = _;
   var sauce: Sauce = _;
@@ -10,16 +10,18 @@ trait Pizza {
 
   var name = "Base Pizza"
   var description = "Base Pizza description"
-  
-  var pizzaIngrediantFactory : PizzaIngrediantFactory = _
+
+  var pizzaIngrediantFactory: PizzaIngrediantFactory = _
   def getAlltheIngredients() = {
-    cheese = pizzaIngrediantFactory.createCheese
-    clam = pizzaIngrediantFactory.createClam
-    dough = pizzaIngrediantFactory.createDought
-    pepperoni = pizzaIngrediantFactory.createPepperoni
-    sauce = pizzaIngrediantFactory.createSauce
-    veggies = pizzaIngrediantFactory.createVeggies
-    
+    if (pizzaIngrediantFactory != null) {
+      cheese = pizzaIngrediantFactory.createCheese
+      clam = pizzaIngrediantFactory.createClam
+      dough = pizzaIngrediantFactory.createDought
+      pepperoni = pizzaIngrediantFactory.createPepperoni
+      sauce = pizzaIngrediantFactory.createSauce
+      veggies = pizzaIngrediantFactory.createVeggies
+    }
+
   }
 
   def prepare() = println("Default prepare : Preparing " + name)

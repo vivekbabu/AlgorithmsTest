@@ -1,4 +1,4 @@
-package in.designpatterns.observer
+package in.designpatterns.scala.observer
 
 trait Observable {
   var changed: Boolean = false

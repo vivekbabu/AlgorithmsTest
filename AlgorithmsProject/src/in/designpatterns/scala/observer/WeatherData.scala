@@ -1,4 +1,4 @@
-package in.designpatterns.observer
+package in.designpatterns.scala.observer
 
 class WeatherData extends Observable {
   var temperature: Float = _

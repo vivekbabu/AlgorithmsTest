@@ -1,4 +1,4 @@
-package in.designpatterns.observer
+package in.designpatterns.scala.observer
 
 object MainClass {
   def main(args: Array[String]) {

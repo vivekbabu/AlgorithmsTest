@@ -1,4 +1,4 @@
-package in.designpatterns.factory
+package in.designpatterns.scala.factory
 
 class SimplePizzaFactory extends PizzaFactory {
 
