@@ -11,6 +11,7 @@ val t5 = t4 incl 3                                //> t5  : in.algorithms.intset
 val t6 = t5 incl 8                                //> t6  : in.algorithms.intsets.IntSet = {{.3.}7{.8.}}
 
 val t7 = tq union t6                              //> t7  : in.algorithms.intsets.IntSet = {{.3{.4.}}7{.8{.9{.10.}}}}
+
 }
 
 
