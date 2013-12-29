@@ -1,4 +1,4 @@
-package in.algorithms.insertionsort
+package in.algorithms.sort
 
 object InsertionSort {
   def insertionSort(xs: List[Int]): List[Int] = {
