@@ -1,7 +1,7 @@
 package in.algorithms.sort
 
 object MergeSortWithOrdering {
-  def mergesort[T](xs: List[T])(lt: Ordering[T]): List[T] = {
+  def mergesort[T](xs: List[T])(implicit lt: Ordering[T]): List[T] = {
 
     val n = xs.length / 2
     if (n == 0) xs
@@ -15,12 +15,12 @@ object MergeSortWithOrdering {
 
       }
       val (fst, sec) = xs splitAt (n)
-      merge(mergesort(fst)(lt), mergesort(sec)(lt))
+      merge(mergesort(fst), mergesort(sec))
     }
 
   }
   def main(args: Array[String]) {
-    println(mergesort(List(2, 1, 3, 6, 5, 4))(Ordering.Int))
-    println(mergesort(List("mangoes", "oranges", "apples", "lemons"))(Ordering.String))
+    println(mergesort(List(2, 1, 3, 6, 5, 4)))
+    println(mergesort(List("mangoes", "oranges", "apples", "lemons")))
   }
 }
