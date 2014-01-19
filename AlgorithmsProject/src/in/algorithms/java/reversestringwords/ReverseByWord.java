@@ -1,46 +1,47 @@
 package in.algorithms.java.reversestringwords;
 
 public class ReverseByWord {
+	
+	public static void main(String[] args) {
+		System.out.println(reverseByWords("This is a good test for testing whether reverse works"));
+	}
 
-    public static char[] reversePart (char[] givenString){
-        for (int i=0,j=givenString.length-1; i<givenString.length/2; i++,j--){
-            char temp = givenString[i];
-            givenString[i] = givenString[j];
-            givenString[j] = temp;
-        }
-        return givenString;
-    }
-    
-    public static void reversePart (char[] givenString,int first, int last){
-        for (int i=first,j=last; i<(last-first)/2; i++,j--){
-            char temp = givenString[i];
-            givenString[i] = givenString[j];
-            givenString[j] = temp;
-        }
-      
-    }
+	private static String reverseByWords(String string) {
+		char[] characters = string.toCharArray();
+		reverseTheString(characters, 0, characters.length-1);
+		reverseEachWordsInTheString(characters);
+		return String.valueOf(characters);
+	}
 
-    public static String reverseByWord (char[] in){
-       // String reversed = String.valueOf(reversePart(in.toCharArray()));
-//    	reversePart(in.toCharArray(), 0, in.length());
-//        String word_reversal="";
-//        int last_space=-1;
-//        int j=0;
-//        while (j<in.length()){
-//            if (reversed.charAt(j)==' '){
-//                word_reversal=word_reversal+String.valueOf(reversePart(reversed.substring(last_space+1, j).toCharArray()));
-//                word_reversal=word_reversal+" ";
-//                last_space=j;
-//            }
-//            j++;
-//        }
-//        word_reversal=word_reversal+String.valueOf(reversePart(reversed.substring(last_space+1, in.length()).toCharArray()));
-//        return word_reversal;
-    	return null;
-    }
+	private static void reverseEachWordsInTheString(char[] characters) {
+		int i = 0, forwardPointer =0;
+		while(i<=characters.length) {
+			while(forwardPointer < characters.length && characters[forwardPointer] != ' ') {
+				forwardPointer++;
+			}
+			reverseTheString(characters,i, forwardPointer -1);
+			i = forwardPointer = forwardPointer + 1;
+		}
+	}
 
-    public static void main(String[] args) {
-        // TODO code application logic here
-       // System.out.println(reverseByWord("This is a good test of reversing the words of the String"));
-    }
+	private static void reverseTheString(char[] characters, int first, int last) {
+		int number = (last-first) + 1;
+		int middle = 0;
+		if(number % 2 == 0) {
+			middle = first + (last-first)/2;
+		}
+		else {
+			middle = first + (last-first)/2 -1;
+		}
+		System.out.println();
+		for(int i = first, j= last; i<=middle;i++, j--) {
+			swap(characters, i, j);
+		}
+	}
+
+	private static void swap(char[] characters, int i, int j) {
+		char temp = characters[i];
+		characters[i] = characters[j];
+		characters[j] = temp;
+	}
 }
