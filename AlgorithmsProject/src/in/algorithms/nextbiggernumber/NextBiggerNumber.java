@@ -15,6 +15,27 @@ public class NextBiggerNumber {
 	}
 
 	private static void getNextBiggerNumber(long i) {
+		
+		Long[] digits = getNumberAsDigits(i);
+		int index = getTheIndexToSwapFrom(digits);
+		if (index == -1) {
+			System.out.println("No more higher number possible");
+		}
+		swapTheIndexElementWithTheNextHighestFromRight(digits, index);
+		sort(digits, index+1, digits.length);
+		long finalNumber = getDigitsAsNumber(digits);
+		System.out.println("Next highest = " + finalNumber);
+	}
+
+	private static long getDigitsAsNumber(Long[] digits) {
+		long finalNumber = 0;
+		for(int i = 0; i < digits.length; i++) {
+			finalNumber = finalNumber * 10 + digits[i];
+		}
+		return finalNumber;
+	}
+
+	private static Long[] getNumberAsDigits(long i) {
 		List<Long> digitsList = new ArrayList<Long>();
 		while (i > 0) {
 			digitsList.add((i % 10));
@@ -24,25 +45,7 @@ public class NextBiggerNumber {
 		reverse(digitsList);
 		Long[] digits = new Long[digitsList.size()];
 		digits = (Long[]) digitsList.toArray(digits);
-
-		for (int j = 0; j < digits.length; j++) {
-			System.out.println(digits[j] + " ");
-		}
-
-		int index = getTheIndexToSwapFrom(digits);
-		if (index == -1) {
-			System.out.println("No more higher number possible");
-		} else {
-			System.out.println("Start operating from" + digits[index]);
-		}
-		swapTheIndexElementWithTheNextHighestFromRight(digits, index);
-		
-		
-		sort(digits, index+1, digits.length);
-		for (int j = 0; j < digits.length; j++) {
-			System.out.print(digits[j] + " ");
-		}
-
+		return digits;
 	}
 
 	private static void sort(Long[] digits, int first, int last ) {
