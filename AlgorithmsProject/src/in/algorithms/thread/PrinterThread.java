@@ -1,4 +1,4 @@
-package in.algorithm.thread;
+package in.algorithms.thread;
 
 public class PrinterThread implements Runnable {
 	private int threadId;

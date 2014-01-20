@@ -1,4 +1,4 @@
-package in.algorithm.thread;
+package in.algorithms.thread;
 
 import java.util.ArrayList;
 import java.util.List;
