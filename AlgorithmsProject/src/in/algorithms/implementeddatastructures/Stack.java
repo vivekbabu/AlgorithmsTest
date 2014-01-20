@@ -29,5 +29,11 @@ public class Stack<T> {
 		}
 		System.out.println();
 	}
+	
+	public Node<T> getTop() {
+		return top;
+	}
+	
+	
 
 }

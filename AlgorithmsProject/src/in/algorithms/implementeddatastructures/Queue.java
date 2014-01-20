@@ -36,5 +36,9 @@ public class Queue<T> {
 		}
 		System.out.println();
 	}
+	
+	public Node<T> getFront() {
+		return front;
+	}
 
 }

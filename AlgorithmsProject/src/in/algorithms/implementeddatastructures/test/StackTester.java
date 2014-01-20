@@ -1,5 +1,6 @@
 package in.algorithms.implementeddatastructures.test;
 
+import in.algorithms.implementeddatastructures.Node;
 import in.algorithms.implementeddatastructures.Stack;
 
 public class StackTester {
