@@ -71,12 +71,14 @@ object ListFunctions {
     }
   }
 
-  def reverse[T](xs: List[T]): List[T] = {
-    xs match {
-      case List() => List()
-      case y :: ys => reverse(ys) ++ List(y)
-    }
-  }
+ def reverse[T](xs : List[T]) : List[T] = {
+   
+   xs match {
+     case List() => Nil
+     case y :: ys => reverse(ys) ++ List(y)	 
+     
+   }
+ }
 
   def posElementsOfList(xs: List[Int]): List[Int] = {
     xs match {
@@ -97,9 +99,9 @@ object ListFunctions {
   }
   
   def encode[T] (xs : List[T]) : List[(T, Int)] = {
-    
     pack(xs).map(ys => (ys.head	,ys.length))
   }
+ 
 
   def main(args: Array[String]) {
     val list = List(2, 1, 3, 6, 5, 4)
