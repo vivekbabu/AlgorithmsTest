@@ -1,7 +1,6 @@
 package in.algorithms.bst
 
 class BSTOperations {
-   //> maxCurrent  : Int = -2147483648
   
   def inOrder(root: BSTNode): Unit = {
     if (root != null) {
@@ -9,7 +8,7 @@ class BSTOperations {
       System.out.print(root.value + " ")
       inOrder(root.rchild)
     }
-  } //> inOrder: (root: in.algorithms.bst.BSTNode)Unit
+  } 
 
   def preOrder(root: BSTNode): Unit = {
     if (root != null) {
@@ -18,7 +17,7 @@ class BSTOperations {
       preOrder(root.rchild)
 
     }
-  } //> preOrder: (root: in.algorithms.bst.BSTNode)Unit
+  } 
 
   def postOrder(root: BSTNode): Unit = {
     if (root != null) {
