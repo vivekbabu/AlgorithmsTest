@@ -1,4 +1,4 @@
-package in.designpatters.broker;
+package in.designpatterns.broker;
 
 public class BrokerSimulator {
 	public static void main(String[] args) {

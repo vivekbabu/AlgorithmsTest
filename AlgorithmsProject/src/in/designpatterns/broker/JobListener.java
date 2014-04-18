@@ -1,4 +1,4 @@
-package in.designpatters.broker;
+package in.designpatterns.broker;
 
 public interface JobListener {
 	

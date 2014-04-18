@@ -1,4 +1,4 @@
-package in.designpatters.broker;
+package in.designpatterns.broker;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

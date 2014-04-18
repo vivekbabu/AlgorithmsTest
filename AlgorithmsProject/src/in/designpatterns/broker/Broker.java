@@ -1,4 +1,4 @@
-package in.designpatters.broker;
+package in.designpatterns.broker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
