@@ -1,8 +1,8 @@
 package in.algorithms.arrayisland
 
-object IslandCounter {
+object CountIslands {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
-  val ROW = 5                                     //> ROW  : Int = 5
+   val ROW = 5                                    //> ROW  : Int = 5
   val COL = 5                                     //> COL  : Int = 5
   val array = Array.ofDim[Int](ROW, COL)          //> array  : Array[Array[Int]] = Array(Array(0, 0, 0, 0, 0), Array(0, 0, 0, 0, 0
                                                   //| ), Array(0, 0, 0, 0, 0), Array(0, 0, 0, 0, 0), Array(0, 0, 0, 0, 0))
@@ -63,7 +63,6 @@ object IslandCounter {
                                                   //| 1 0 0 0 0
                                                   //| 0 0 0 0 0
                                                   //| 1 0 1 0 1
-  calculateTheIslands
+   calculateTheIslands
   println(count)                                  //> 5
-
 }
