@@ -1,4 +1,4 @@
 package in.algorithms.bst
 
-class BSTNode(val value : Integer,val lchild : BSTNode, val rchild : BSTNode) {
+class BSTNode(var value : Integer,var lchild : BSTNode, var rchild : BSTNode) {
 }

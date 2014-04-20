@@ -45,5 +45,27 @@ class BSTOperations {
    BSTChecker(root)
     isBST
   }
- 
+  
+  def convertToBST(root : BSTNode) : BSTNode = {
+    var head : BSTNode = null
+    var prev : BSTNode = null
+    def BSTConvert(root : BSTNode) : Unit = {
+      if(root == null) 
+        return
+      else {
+        BSTConvert(root.lchild)
+        if(prev == null) 
+          head = root
+         else {
+           root.lchild = prev
+           prev.rchild = root
+         }
+        prev = root
+        BSTConvert(root.rchild)
+      } 
+    }
+    BSTConvert(root)
+    head
+  }
+
 }
