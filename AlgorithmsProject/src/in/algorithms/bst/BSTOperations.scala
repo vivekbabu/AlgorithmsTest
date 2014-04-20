@@ -67,5 +67,13 @@ class BSTOperations {
     BSTConvert(root)
     head
   }
+  
+  def printInSpiralModel(root : BSTNode) : Unit = {
+    
+//    var leftToRight = 
+    
+    
+    
+  }
 
 }
