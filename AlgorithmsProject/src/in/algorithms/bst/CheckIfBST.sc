@@ -5,12 +5,12 @@ object CheckIfBST {
 
   val root1 = new BSTNode(4,
     new BSTNode(2, new BSTNode(1, null, null), new BSTNode(3, null, null)),
-    new BSTNode(5, null, null))                   //> root1  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@7f15e645
+    new BSTNode(5, null, null))                   //> root1  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@4538353
   val root2 = new BSTNode(3,
     new BSTNode(2, new BSTNode(1, null, null), new BSTNode(4, null, null)),
-    new BSTNode(5, null, null))                   //> root2  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@76c0fd31
-  var bst = new BSTOperations                     //> bst  : in.algorithms.bst.BSTOperations = in.algorithms.bst.BSTOperations@1f2
-                                                  //| c8b2a
+    new BSTNode(5, null, null))                   //> root2  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@6d2c05d
+  var bst = new BSTOperations                     //> bst  : in.algorithms.bst.BSTOperations = in.algorithms.bst.BSTOperations@10d
+                                                  //| d95f6
   bst.inOrder(root2); println                     //> 1 2 4 3 5 
   bst.checkIfBST(root2)                           //> res0: Boolean = false
 
