@@ -1,6 +1,8 @@
 package in.algorithms.queue;
 
-public class Queue<T> {
+import java.util.Iterator;
+
+public class Queue<T> implements Iterable<T> {
 	
 	QueueNode<T> head = null;
 	QueueNode<T> tail = null;
@@ -42,5 +44,33 @@ public class Queue<T> {
 			return removedNode.value;
 		}
 	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new StackIterator();
+	}
 	
+	private class StackIterator implements Iterator<T> {
+
+		private QueueNode<T> current = head;
+		@Override
+		public boolean hasNext() {
+			return current !=null;
+		}
+
+		@Override
+		public T next() {
+				
+			T value =  current.value;
+			current = current.next;
+			return value;
+				
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+		
+	}
 }
