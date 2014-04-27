@@ -17,7 +17,7 @@ public class InfixToPostfix {
 		precedenceMap.put('^', 3);
 	}
 	
-	private boolean isOperator(char character) {
+	public static boolean isOperator(char character) {
 		boolean isOperator = false;
 		switch (character) {
 		case '+':
@@ -32,10 +32,8 @@ public class InfixToPostfix {
 	}
 	
 	Stack<Character> operatorStack = new Stack<Character>();
-	Stack<Character> operandStack = new Stack<Character>();
 	
 	public String convertToPostFix(String expression) {
-		operatorStack = new Stack<Character>();
 		operatorStack = new Stack<Character>();
 		postfixExpression = new StringBuilder();
 		for(int i = 0; i< expression.length() ; i++) {
@@ -54,10 +52,21 @@ public class InfixToPostfix {
 			}
 			else if(character == ')') {
 				Character stackCharacter = operatorStack.pop();
-				//while()
+				while(stackCharacter!= '(') {
+					postfixExpression.append(stackCharacter);
+					stackCharacter = operatorStack.pop();
+				}
 			}
+			else 
+				postfixExpression.append(character);
 		}
-		return null;
+		Character stackCharacter = operatorStack.pop();
+		while(stackCharacter!=null) {
+			postfixExpression.append(stackCharacter);
+			stackCharacter = operatorStack.pop();
+		}
+			
+		return postfixExpression.toString();
 		
 	}
 
