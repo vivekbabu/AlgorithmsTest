@@ -103,7 +103,31 @@ class BSTOperations {
     else {
       1 + Math.max(getTreeHeight(root.lchild), getTreeHeight(root.rchild))
     }
-
   }
-
+  
+   def giveMirrorTree(root : BSTNode) : BSTNode = { 
+     if(root == null) 
+       return null
+       else {
+         val left = giveMirrorTree(root.lchild); 
+         val right = giveMirrorTree(root.rchild);
+         return new BSTNode(root.value,right, left)
+       }
+   } 
+   
+   def convertToMirror(root : BSTNode) : Unit = {
+     if(root == null) return 
+     else {
+       convertToMirror(root.lchild)
+       convertToMirror(root.rchild)
+       var temp = root.lchild
+       root.lchild = root.rchild
+       root.rchild = temp
+       
+       
+     }
+     
+   }
+   
+   
 }
