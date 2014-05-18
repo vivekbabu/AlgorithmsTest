@@ -68,7 +68,7 @@ class BSTOperations {
     head
   }
 
-  def printInSpiralModel(root: BSTNode, initialLeftToRightValue : Boolean): Unit = {
+  def printInSpiralModel(root: BSTNode, initialLeftToRightValue: Boolean): Unit = {
 
     var leftToRight = initialLeftToRightValue
     val height = getTreeHeight(root)
@@ -91,10 +91,10 @@ class BSTOperations {
     }
 
     for (i <- 1 to height) {
-       printSpiral(root, i)
+      printSpiral(root, i)
       leftToRight = !leftToRight
     }
-     
+
   }
 
   def getTreeHeight(root: BSTNode): Int = {
@@ -104,30 +104,51 @@ class BSTOperations {
       1 + Math.max(getTreeHeight(root.lchild), getTreeHeight(root.rchild))
     }
   }
-  
-   def giveMirrorTree(root : BSTNode) : BSTNode = { 
-     if(root == null) 
-       return null
-       else {
-         val left = giveMirrorTree(root.lchild); 
-         val right = giveMirrorTree(root.rchild);
-         return new BSTNode(root.value,right, left)
-       }
-   } 
-   
-   def convertToMirror(root : BSTNode) : Unit = {
-     if(root == null) return 
-     else {
-       convertToMirror(root.lchild)
-       convertToMirror(root.rchild)
-       var temp = root.lchild
-       root.lchild = root.rchild
-       root.rchild = temp
-       
-       
-     }
-     
-   }
-   
-   
+
+  def giveMirrorTree(root: BSTNode): BSTNode = {
+    if (root == null)
+      return null
+    else {
+      val left = giveMirrorTree(root.lchild);
+      val right = giveMirrorTree(root.rchild);
+      return new BSTNode(root.value, right, left)
+    }
+  }
+
+  def convertToMirror(root: BSTNode): Unit = {
+    if (root == null) return
+    else {
+      convertToMirror(root.lchild)
+      convertToMirror(root.rchild)
+      var temp = root.lchild
+      root.lchild = root.rchild
+      root.rchild = temp
+
+    }
+
+  }
+
+  def maxFromLeafToRoot(root: BSTNode): Int = {
+
+    if (root == null) 0
+    else
+      root.value + Math.max(maxFromLeafToRoot(root.lchild), maxFromLeafToRoot(root.rchild))
+  }
+
+  def maxFromLeafToLeaf(root: BSTNode): Int = {
+    var highestSum = 0
+    def max(root: BSTNode): Int = {
+      if (root == null) 0
+      else {
+        val leftMax = max(root.lchild)
+        val rightMax = max(root.rchild)
+        if (highestSum < root.value + leftMax + rightMax)
+          highestSum = root.value + leftMax + rightMax
+        root.value + Math.max(max(root.lchild), max(root.rchild))
+      }
+    }
+    max(root)
+    highestSum
+  }
+
 }
