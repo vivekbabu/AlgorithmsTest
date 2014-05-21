@@ -7,17 +7,17 @@ object LeastCommonAncestor {
     var nodesFound = 0
     def lcaEachNode(root: BSTNode, first: BSTNode, second: BSTNode): BSTNode = {
       if (root == null) null
-      else if (root.value == first.value || root.value == second.value) {
-        nodesFound = nodesFound + 1
-        lcaEachNode(root.lchild, first, second)
-        lcaEachNode(root.rchild, first, second)
-        root
-      } else {
+      else {
         val l = lcaEachNode(root.lchild, first, second)
         val r = lcaEachNode(root.rchild, first, second)
-        if (l != null && r != null) root
-        else if (l != null) l
-        else r
+        if (root.value == first.value || root.value == second.value) {
+          nodesFound = nodesFound + 1
+          root
+        } else {
+          if (l != null && r != null) root
+          else if (l != null) l
+          else r
+        }
       }
 
     }
@@ -36,10 +36,10 @@ object LeastCommonAncestor {
     new BSTNode(1, new BSTNode(0, null, null), new BSTNode(8, null, null)))
                                                   //> root  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@7f15e645
 
-  val leastCA = lca(root, new BSTNode(12, null, null), new BSTNode(12, null, null))
-                                                  //> leastCA  : in.algorithms.bst.BSTNode = null
+  val leastCA = lca(root, new BSTNode(8, null, null), new BSTNode(8, null, null))
+                                                  //> leastCA  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@b75b0b5
 
-  if (leastCA != null) leastCA.value              //> res0: Any = ()
+  if (leastCA != null) leastCA.value              //> res0: Any = 8
 
 }
   
