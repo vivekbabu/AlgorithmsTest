@@ -4,7 +4,7 @@ import in.algorithms.implementeddatastructures.Node;
 
 public class LinkedListRemoveDuplicates {
 
-	private <T> void removeDuplicates(Node<T> head) {
+	public <T> Node<T> removeDuplicates(Node<T> head) {
 		Node<T> runner = head;
 		Node<T> current = head.next;
 
@@ -22,6 +22,7 @@ public class LinkedListRemoveDuplicates {
 			}
 			current = current.next;
 		}
+		return head;
 	}
 
 	public static void main(String args[]) {
