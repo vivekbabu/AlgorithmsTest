@@ -16,7 +16,7 @@ public class Node<T> {
 	
 	public void printList(Node<T> head) {
 		while (head != null) {
-			System.out.println(head.item + " ");
+			System.out.print(head.item + " ");
 			head = head.next;
 		}
 	} 

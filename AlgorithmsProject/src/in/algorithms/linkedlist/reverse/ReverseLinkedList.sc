@@ -12,23 +12,17 @@ object ReverseLinkedList {
       1).setNext(new Node(2)
       .setNext(new Node(4)
         .setNext(new Node(1)))))))))));           //> node  : in.algorithms.implementeddatastructures.Node[Int] = in.algorithms.im
-                                                  //| plementeddatastructures.Node@4b263427
+                                                  //| plementeddatastructures.Node@392a12fc
   val removeDuplicates = new LinkedListRemoveDuplicates
                                                   //> removeDuplicates  : in.algorithms.linkedlist.removeduplicates.LinkedListRemo
                                                   //| veDuplicates = in.algorithms.linkedlist.removeduplicates.LinkedListRemoveDup
-                                                  //| licates@b75b0b5
+                                                  //| licates@5ba440f3
   var finalList = removeDuplicates.removeDuplicates(node)
                                                   //> finalList  : in.algorithms.implementeddatastructures.Node[Int] = in.algorith
-                                                  //| ms.implementeddatastructures.Node@4b263427
-  node.printList(finalList)                       //> 8 
-                                                  //| 2 
-                                                  //| 4 
-                                                  //| 1 
+                                                  //| ms.implementeddatastructures.Node@392a12fc
+  node.printList(finalList)                       //> 8 2 4 1 
   finalList = reverseList(finalList)
-  node.printList(finalList)                       //> 1 
-                                                  //| 4 
-                                                  //| 2 
-                                                  //| 8 
+  node.printList(finalList)                       //> 1 4 2 8 
 
   def reverseList(head: Node[Int]): Node[Int] = {
     var prev: Node[Int] = null;

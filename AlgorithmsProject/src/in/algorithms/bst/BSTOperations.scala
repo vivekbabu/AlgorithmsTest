@@ -150,5 +150,17 @@ class BSTOperations {
     max(root)
     highestSum
   }
-
+  
+  def printHeightWise(root : BSTNode, depth : Int) : Unit = {
+    if(root==null) return
+    else {
+      if(depth == 1) print(root.value + " ")
+      else {
+        printHeightWise(root.lchild, depth-1)
+        printHeightWise(root.rchild, depth-1)
+      }
+    }
+ 
+    
+  }
 }
