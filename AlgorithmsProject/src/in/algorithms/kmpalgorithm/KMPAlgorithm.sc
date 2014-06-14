@@ -47,7 +47,6 @@ object KMPAlgorithm {
           m = m + i - T(i)
           i = T(i)
         } else {
-
           m = m + i + 1
           i = 0
         }

@@ -4,12 +4,12 @@ object ConvertToLinkedList {
   println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
   val root1 = new BSTNode(4,
     new BSTNode(2, new BSTNode(1, null, null), new BSTNode(3, null, null)),
-    new BSTNode(5, null, null))                   //> root1  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@79447bb5
+    new BSTNode(5, null, null))                   //> root1  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@392a12fc
   val root2 = new BSTNode(3,
     new BSTNode(2, new BSTNode(1, null, null), new BSTNode(4, null, null)),
-    new BSTNode(5, null, null))                   //> root2  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@7f15e645
-  var bst = new BSTOperations                     //> bst  : in.algorithms.bst.BSTOperations = in.algorithms.bst.BSTOperations@381
-                                                  //| 0287d
+    new BSTNode(5, null, null))                   //> root2  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@79447bb5
+  var bst = new BSTOperations                     //> bst  : in.algorithms.bst.BSTOperations = in.algorithms.bst.BSTOperations@39f
+                                                  //| 7d5c3
   bst.inOrder(root2)                              //> 1 2 4 3 5 
   bst.inOrder(root1)                              //> 1 2 3 4 5 
 

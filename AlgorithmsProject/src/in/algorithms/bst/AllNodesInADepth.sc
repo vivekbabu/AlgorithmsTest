@@ -35,7 +35,7 @@ object AllNodesInADepth {
  	  val root = new BSTNode(10,
     new BSTNode(-2, new BSTNode(800, null, null), new BSTNode(-4, null, null)),
     new BSTNode(7, new BSTNode(400, null, null), new BSTNode(417, null, null)))
-                                                  //> root  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@b75b0b5
+                                                  //> root  : in.algorithms.bst.BSTNode = in.algorithms.bst.BSTNode@76c0fd31
     printTheElementsOnADepth(	root, 1); println()
                                                   //> 10   
     printTheElementsOnADepth(	root, 2); println()

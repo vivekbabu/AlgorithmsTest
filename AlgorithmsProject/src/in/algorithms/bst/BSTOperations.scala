@@ -18,6 +18,17 @@ class BSTOperations {
 
     }
   }
+  
+  
+   def preOrderWithCallback(root: BSTNode, f:(BSTNode=>Unit)): Unit = {
+    if (root != null) {
+      f(root)
+     // System.out.print(root.value + " ")
+      preOrderWithCallback(root.lchild,f)
+      preOrderWithCallback(root.rchild,f)
+
+    }
+  }
 
   def postOrder(root: BSTNode): Unit = {
     if (root != null) {
@@ -150,17 +161,52 @@ class BSTOperations {
     max(root)
     highestSum
   }
-  
-  def printHeightWise(root : BSTNode, depth : Int) : Unit = {
-    if(root==null) return
+
+  def printHeightWise(root: BSTNode, depth: Int): Unit = {
+    if (root == null) return
     else {
-      if(depth == 1) print(root.value + " ")
+      if (depth == 1) print(root.value + " ")
       else {
-        printHeightWise(root.lchild, depth-1)
-        printHeightWise(root.rchild, depth-1)
+        printHeightWise(root.lchild, depth - 1)
+        printHeightWise(root.rchild, depth - 1)
       }
     }
- 
-    
+  }
+
+  def checkIfSubTree(tree: BSTNode, subtree: BSTNode): Boolean = {
+
+    if (subtree == null) true
+    else if (tree == null) false
+    else {
+      if (isIdentical(tree, subtree)) {
+        true
+      } else {
+        checkIfSubTree(tree.lchild, subtree) || checkIfSubTree(tree.rchild, subtree)
+
+      }
+    }
+  }
+
+  def isIdentical(tree: BSTNode, subtree: BSTNode): Boolean = {
+    if (tree == null && subtree == null) true
+    else if (tree == null || subtree == null) false
+    else {
+      tree.value == subtree.value && isIdentical(tree.lchild, subtree.lchild) && isIdentical(tree.rchild, subtree.rchild)
+    }
+  }
+
+  def insertIntoBST(node: BSTNode, value: Int): BSTNode = {
+    if (node == null) new BSTNode(value, null, null)
+    else {
+      if (value < node.value) {
+        node.lchild = insertIntoBST(node.lchild, value)
+      }
+      else if (value > node.value) {
+        node.rchild = insertIntoBST(node.rchild, value)
+
+      }
+      node
+    }
+
   }
 }
