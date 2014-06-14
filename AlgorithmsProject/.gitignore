@@ -1,1 +1,7 @@
 /bin
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+
+.cache
