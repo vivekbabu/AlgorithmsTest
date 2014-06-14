@@ -21,8 +21,8 @@ class BSTOperations {
   
   
    def preOrderWithCallback(root: BSTNode, f:(BSTNode=>Unit)): Unit = {
-    if (root != null) {
-      f(root)
+	  f(root)
+     if (root != null) {
      // System.out.print(root.value + " ")
       preOrderWithCallback(root.lchild,f)
       preOrderWithCallback(root.rchild,f)
