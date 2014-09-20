@@ -42,7 +42,7 @@ public class RoomAlotter {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int NumberOfTestCases = Integer.parseInt(br.readLine().trim());
 		for (int i = 0; i < NumberOfTestCases; i++) {
-			int persons = Integer.parseInt(br.readLine().trim());
+			br.readLine();
 			int numberOfRooms = 0;
 			List<Tuple> tuples = new ArrayList<Tuple>();
 			for (int j = 0; j < 2; j++) {
