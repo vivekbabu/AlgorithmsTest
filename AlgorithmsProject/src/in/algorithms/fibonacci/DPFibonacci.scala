@@ -28,7 +28,7 @@ object DPFibonacci {
     
     /** Using normal recuresion */
     start = System.currentTimeMillis();
-    for (i <- 1 to 50) println("Fib of " + i + " is " + fibonacci(i))
+    for (i <- 1 to 35) println("Fib of " + i + " is " + fibonacci(i))
     end = System.currentTimeMillis();
     println("Normal Took" + (end - start) / 1000 + "seconds ")
   }

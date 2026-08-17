@@ -1,6 +1,8 @@
+package in.algorithms.sort;
+
 import java.util.*;
 
-class RadixSort {
+public class RadixSort {
 
 
     static void print(int[] arr, int n) {

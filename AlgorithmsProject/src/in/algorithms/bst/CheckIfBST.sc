@@ -16,7 +16,7 @@ object CheckIfBST {
   bst.checkIfBST(root2)                           //> res0: Boolean = false
 
   bst.inOrder(root1); println                     //> 1 2 3 4 5 6 7 
-  bst.preOrder(root1, {(node : BSTNode) => System.out.print(node.value+ " ")}); println
+  bst.preOrderWithCallback(root1, {(node : BSTNode) => System.out.print(node.value+ " ")}); println
                                                   //> 4 2 1 3 6 5 7 
   bst.postOrder(root1); println                   //> 1 3 2 5 7 6 4 
   bst.checkIfBST(root1)                           //> res1: Boolean = true

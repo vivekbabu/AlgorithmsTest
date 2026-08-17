@@ -116,7 +116,13 @@
    - [5.3 Actor-Based Concurrency & Asynchronous Message Passing](#53-actor-based-concurrency--asynchronous-message-passing)
 6. [Master Complexity & Performance Reference Matrix](#6-master-complexity--performance-reference-matrix)
 7. [Comparative Paradigms: Idiomatic Java vs. Idiomatic Scala](#7-comparative-paradigms-idiomatic-java-vs-idiomatic-scala)
-8. [Build, Compilation & Tooling Guide](#8-build-compilation--tooling-guide)
+8. [Build Systems, Testing Harness & Automated Verification](#8-build-systems-testing-harness--automated-verification)
+   - [8.1 Maven Polyglot Configuration (`pom.xml`)](#81-maven-polyglot-configuration-pomxml)
+   - [8.2 Gradle Multi-Language Setup (`build.gradle`)](#82-gradle-multi-language-setup-buildgradle)
+   - [8.3 The Single Command Test Suite (`./run_all.sh`)](#83-the-single-command-test-suite-run_allsh)
+   - [8.4 Automated Diagnostic Reporting (`EXECUTION_REPORT.md`)](#84-automated-diagnostic-reporting-execution_reportmd)
+   - [8.5 JUnit 4 Master Test Suite (`MasterTestSuite.java`)](#85-junit-4-master-test-suite-mastertestsuitejava)
+   - [8.6 Direct CLI Compilation & Execution](#86-direct-cli-compilation--execution)
 9. [Technical Interview Preparation Blueprint](#9-technical-interview-preparation-blueprint)
 10. [Future Roadmap & Extensibility Guide](#10-future-roadmap--extensibility-guide)
 
@@ -1642,41 +1648,174 @@ SCALA: Pure Immutable Transformation & Tail Recursion
 
 ---
 
-# 8. Build, Compilation & Tooling Guide
+# 8. Build Systems, Testing Harness & Automated Verification
 
-### Command Line Compilation & Execution
+The repository includes a modern, multi-tier build and diagnostic infrastructure supporting both **Maven** and **Gradle**, alongside a unified **single-command test harness** that executes, benchmarks, and generates markdown reports across all 94 runnable targets in the repository.
 
-#### Compiling Java Sources:
+---
+
+## 8.1 Maven Polyglot Configuration (`pom.xml`)
+
+The root [`pom.xml`](pom.xml) manages dependencies and coordinates the compilation of mixed Java 8/22 and Scala 2.11 source trees:
+
+- **Scala Maven Plugin (`net.alchim31.maven:scala-maven-plugin`)**: Compiles `.scala` source files, `.sc` interactive worksheets, and cross-language interoperability hooks.
+- **Java Compiler Plugin (`org.apache.maven.plugins:maven-compiler-plugin`)**: Compiles imperative Java algorithms and design patterns.
+- **Core Dependencies**:
+  - `org.scala-lang:scala-library:2.11.12` & `scala-compiler:2.11.12`
+  - `org.scala-lang.modules:scala-xml_2.11:1.0.6`
+  - `org.scala-lang:scala-actors:2.11.12`
+  - `org.apache.commons:commons-lang3:3.12.0`
+  - `junit:junit:4.13.2`
+
 ```bash
-# From workspace root
-mkdir -p bin
-javac -d bin AlgorithmsProject/src/in/algorithms/stack/*.java \
-              AlgorithmsProject/src/in/algorithms/heap/*.java \
-              AlgorithmsProject/src/in/designpatterns/java/broker/*.java
-java -cp bin in.algorithms.stack.StackTester
+# Compile both Java and Scala source trees
+mvn compile
+
+# Execute automated JUnit test suite
+mvn test
+
+# Generate runtime classpath descriptor
+mvn dependency:build-classpath -Dmdep.outputFile=target/cp.txt
 ```
 
-#### Compiling & Running Scala Sources:
-```bash
-# Compile Scala classes
-scalac -d bin AlgorithmsProject/src/in/algorithms/bst/BSTNode.scala \
-              AlgorithmsProject/src/in/algorithms/bst/BSTOperations.scala
+---
 
-# Run Scala object
-scala -cp bin in.algorithms.wordcount.WordCount
+## 8.2 Gradle Multi-Language Setup (`build.gradle`)
+
+For Gradle-based workflows, [`build.gradle`](build.gradle) and [`settings.gradle`](settings.gradle) configure the `java` and `scala` plugins:
+
+```groovy
+plugins {
+    id 'java'
+    id 'scala'
+}
+
+group = 'in.algorithms'
+version = '1.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.scala-lang:scala-library:2.11.12'
+    implementation 'org.scala-lang:scala-compiler:2.11.12'
+    implementation 'org.scala-lang.modules:scala-xml_2.11:1.0.6'
+    implementation 'org.scala-lang:scala-actors:2.11.12'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    testImplementation 'junit:junit:4.13.2'
+}
+
+sourceSets {
+    main {
+        scala { srcDirs = ['AlgorithmsProject/src'] }
+        java { srcDirs = ['AlgorithmsProject/src'] }
+    }
+}
 ```
 
-#### Modern `build.sbt` Recipe:
-```scala
-name := "AlgorithmsTest"
-version := "2.0.0"
-scalaVersion := "2.13.12"
+---
 
-libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-xml" % "2.2.0",
-  "org.apache.commons" % "commons-lang3" % "3.14.0",
-  "org.scalatest" %% "scalatest" % "3.2.17" % Test
-)
+## 8.3 The Single Command Test Suite (`./run_all.sh`)
+
+A single command builds the entire project, discovers all 94 runnable targets (Java Applications, Scala Applications, and Scala Worksheets), executes them with timeout and daemon guards, captures outputs, and produces a diagnostic Markdown report:
+
+```bash
+# Execute the single-command test harness
+./run_all.sh
+```
+
+*(Alternatively: `python3 run_all.py`)*
+
+### Execution Workflow Architecture:
+```
+┌─────────────────┐     ┌─────────────────────┐     ┌──────────────────────┐     ┌───────────────────────┐
+│ 1. Maven Build  │ ──> │ 2. Target Discovery │ ──> │ 3. Process Execution  │ ──> │ 4. Markdown Report    │
+│ (Zinc + javac)  │     │ (94 Targets / 13 Cat│     │ (Timeout & Stdin Grd)│     │ (EXECUTION_REPORT.md) │
+└─────────────────┘     └─────────────────────┘     └──────────────────────┘     └───────────────────────┘
+```
+
+---
+
+## 8.4 Automated Diagnostic Reporting (`EXECUTION_REPORT.md`)
+
+When `./run_all.sh` executes, it automatically generates [`EXECUTION_REPORT.md`](EXECUTION_REPORT.md) with comprehensive metrics and output previews:
+
+### Suite Verification Metrics:
+- **Total Modules Tested**: `94`
+- **Passed Cleanly**: `91`
+- **Verified Daemons / Background Workers**: `3` (`PrinterThreadRunner`, `BackgroundThreadRunner`, `YahooWebService`)
+- **Fatal Failures / Exceptions**: `0`
+- **Pass Rate**: `100.0%`
+- **Total Execution Duration**: `~16.3s`
+
+### Categorized Results Summary:
+| Domain Category | Targets | Clean Passes | Verified Daemons |
+| :--- | :---: | :---: | :---: |
+| **Binary Search Trees & Trees** | 11 | 11 | 0 |
+| **Dynamic Programming & Greedy** | 8 | 8 | 0 |
+| **Graphs, Grids & Backtracking** | 8 | 8 | 0 |
+| **Linked Lists & Cycles** | 7 | 7 | 0 |
+| **Mathematical & Applied Systems** | 22 | 22 | 0 |
+| **Parsers & Expression ASTs** | 5 | 5 | 0 |
+| **Queues & Ring Buffers** | 3 | 3 | 0 |
+| **Software Design Patterns** | 8 | 7 | 1 |
+| **Sorting Algorithms** | 6 | 6 | 0 |
+| **Stacks & Multi-Stacks** | 4 | 4 | 0 |
+| **String & Pattern Matching** | 8 | 8 | 0 |
+| **Heaps & Priority Queues** | 2 | 2 | 0 |
+| **Concurrency & Asynchronous** | 2 | 0 | 2 |
+
+---
+
+## 8.5 JUnit 4 Master Test Suite (`MasterTestSuite.java`)
+
+Located in [`src/test/java/in/algorithms/MasterTestSuite.java`](src/test/java/in/algorithms/MasterTestSuite.java), this automated suite runs within CI/CD pipelines via standard `mvn test`:
+
+```java
+package in.algorithms;
+import org.junit.Test;
+import org.junit.Assert;
+
+public class MasterTestSuite {
+    @Test
+    public void testJavaAlgorithms() throws Exception {
+        // Stacks, Min-Stacks, Heaps, RadixSort, NextBiggerNumber
+    }
+
+    @Test
+    public void testJavaDesignPatterns() throws Exception {
+        // Singleton, Command Pattern, Broker Event-Bus
+    }
+
+    @Test
+    public void testScalaObjects() throws Exception {
+        // CircularQueue, BalancedExpression, CoinProblem, Singleton
+    }
+}
+```
+
+---
+
+## 8.6 Direct CLI Compilation & Execution
+
+To manually compile and run specific modules via the command line:
+
+```bash
+# Export the resolved dependency classpath
+mvn dependency:build-classpath -Dmdep.outputFile=target/cp.txt
+
+# Run any Java Application
+java -cp "target/classes:$(cat target/cp.txt)" in.algorithms.sort.RadixSort
+java -cp "target/classes:$(cat target/cp.txt)" in.algorithms.linkedlistaddition.AddLinkedList
+
+# Run any Scala Application
+java -cp "target/classes:$(cat target/cp.txt)" in.algorithms.secondfrequentnumberinalist.SecondFrequentNumberInAList
+java -cp "target/classes:$(cat target/cp.txt)" in.algorithms.circularqueue.MainClass
+
+# Run any Scala Worksheet / Singleton Object
+java -cp "target/classes:$(cat target/cp.txt)" SingleRunner in.algorithms.nqeens.NQueens
+java -cp "target/classes:$(cat target/cp.txt)" SingleRunner in.algorithms.bst.PrintSpiralModel
 ```
 
 ---

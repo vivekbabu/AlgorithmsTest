@@ -1,6 +1,6 @@
 package in.algorithms.list
 
-object nth {
+object ListUtils {
   def nth[T](n: Integer, list: List[T]): T = {
     if (list.isEmpty) throw new ArrayIndexOutOfBoundsException
     else if (n == 0) list.head

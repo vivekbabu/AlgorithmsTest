@@ -1,0 +1,8 @@
+target/
+build/
+.gradle/
+bin/
+*.class
+.cache
+.worksheet/bin/
+.DS_Store
