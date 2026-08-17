@@ -8,6 +8,9 @@ public static void main(String[] args) {
 }
 
 public static String reverseByWords(String string) {
+  if (string == null || string.isEmpty()) {
+    return string;
+  }
   char[] characters = string.toCharArray();
   reverseTheString(characters, 0, characters.length - 1);
   reverseEachWordsInTheString(characters);
@@ -27,6 +30,9 @@ private static void reverseEachWordsInTheString(char[] characters) {
 }
 
 private static void reverseTheString(char[] characters, int first, int last) {
+  if (first >= last) {
+    return;
+  }
   int number = (last - first) + 1;
   int middle = 0;
   if (number % 2 == 0) {
@@ -34,7 +40,6 @@ private static void reverseTheString(char[] characters, int first, int last) {
   } else {
     middle = first + (last - first) / 2 - 1;
   }
-  System.out.println();
   for (int i = first, j = last; i <= middle; i++, j--) {
     swap(characters, i, j);
   }
