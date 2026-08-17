@@ -31,7 +31,7 @@ private void printLinkedList(Node<Integer> list) {
   }
 }
 
-private Node<Integer> addLists(Node<Integer> list1, Node<Integer> list2) {
+public Node<Integer> addLists(Node<Integer> list1, Node<Integer> list2) {
   int size1 = getSize(list1);
   int size2 = getSize(list2);
   if (size1 < size2) {

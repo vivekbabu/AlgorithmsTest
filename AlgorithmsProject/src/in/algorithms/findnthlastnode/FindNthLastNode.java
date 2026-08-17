@@ -11,7 +11,7 @@ public static void main(String[] args) {
   System.out.println(findNthLastNode(linkedlist, 2));
 }
 
-private static <T> T findNthLastNode(Queue<T> linkedlist, int position) {
+public static <T> T findNthLastNode(Queue<T> linkedlist, int position) {
   int i = 0;
   Node<T> first = linkedlist.getFront();
   Node<T> forwardPointer = first;

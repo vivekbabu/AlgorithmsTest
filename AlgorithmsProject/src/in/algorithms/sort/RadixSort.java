@@ -20,7 +20,7 @@ public class RadixSort {
         print(arr, n);
     }
 
-    private static void radixsort(int[] arr, int n) {
+    public static void radixsort(int[] arr, int n) {
         int max = getMax(arr, n);
         for (int exp = 1; max / exp > 0; exp = exp * 10) {
             countSort(arr, n, exp);

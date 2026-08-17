@@ -7,7 +7,7 @@ public static void main(String[] args) {
       .println(reverseByWords("This is a good test for testing whether reverse works"));
 }
 
-private static String reverseByWords(String string) {
+public static String reverseByWords(String string) {
   char[] characters = string.toCharArray();
   reverseTheString(characters, 0, characters.length - 1);
   reverseEachWordsInTheString(characters);

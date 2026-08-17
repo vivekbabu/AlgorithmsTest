@@ -13,12 +13,13 @@ public static void main(String[] args) {
   getNextBiggerNumber(123456784987654321l);
 }
 
-private static void getNextBiggerNumber(long i) {
+public static void getNextBiggerNumber(long i) {
 
   Long[] digits = getNumberAsDigits(i);
   int index = getTheIndexToSwapFrom(digits);
   if (index == -1) {
     System.out.println("No more higher number possible");
+    return;
   }
   swapTheIndexElementWithTheNextHighestFromRight(digits, index);
   sort(digits, index + 1, digits.length);
