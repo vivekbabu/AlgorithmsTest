@@ -1,38 +1,48 @@
 package in.algorithms.stack;
 
+import java.util.NoSuchElementException;
+
 public class Stack<T> {
-Node<T> head = null;
+    private static class Element<T> {
+        T value;
+        Element<T> next;
 
-class Node<T> {
-T value;
-Node<T> next;
-}
+        Element(T value, Element<T> next) {
+            this.value = value;
+            this.next = next;
+        }
+    }
 
-public Stack<T> push(T element) {
-  Node<T> stackElemnt = new Node<T>();
-  stackElemnt.value = element;
-  stackElemnt.next = head;
-  head = stackElemnt;
-  return this;
-}
+    private Element<T> top;
+    private int size = 0;
 
-public T pop() {
-  if (head == null)
-    return null;
-  else {
-    T valueToReturn = head.value;
-    head = head.next;
-    return valueToReturn;
-  }
-}
+    public void push(T item) {
+        top = new Element<>(item, top);
+        size++;
+    }
 
-public void printStack() {
-  Node<T> top = head;
-  while (top != null) {
-    System.out.print(top.value + "->");
-    top = top.next;
-  }
-  System.out.println("");
-}
+    public T pop() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Stack is empty");
+        }
+        T val = top.value;
+        top = top.next;
+        size--;
+        return val;
+    }
 
+    public T peek() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Stack is empty");
+        }
+        return top.value;
+    }
+
+    public boolean isEmpty() {
+        return top == null;
+    }
+
+    public int size() {
+        return size;
+    }
 }

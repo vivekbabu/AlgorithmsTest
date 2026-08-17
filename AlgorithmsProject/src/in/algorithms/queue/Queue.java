@@ -1,77 +1,72 @@
 package in.algorithms.queue;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Queue<T> implements Iterable<T> {
+    private QueueNode<T> first;
+    private QueueNode<T> last;
+    private int size = 0;
 
-QueueNode<T> head = null;
-QueueNode<T> tail = null;
+    public void enqueue(T item) {
+        QueueNode<T> oldLast = last;
+        last = new QueueNode<>(item);
+        if (isEmpty()) {
+            first = last;
+        } else {
+            oldLast.next = last;
+            last.prev = oldLast;
+        }
+        size++;
+    }
 
-public Queue<T> enqueue(T value) {
-  QueueNode<T> oldTail = tail;
-  tail = new QueueNode<T>(value);
-  if (oldTail == null) {
-    head = tail;
-  } else {
-    oldTail.setNext(tail);
-  }
+    public T dequeue() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        T item = first.value;
+        first = first.next;
+        if (first != null) {
+            first.prev = null;
+        } else {
+            last = null;
+        }
+        size--;
+        return item;
+    }
 
-  return this;
-}
+    public T peek() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        return first.value;
+    }
 
-public boolean isEmpty() {
-  return head == null;
-}
+    public boolean isEmpty() {
+        return first == null;
+    }
 
-public void printValues() {
-  QueueNode<T> temp = head;
-  while (temp != null) {
-    System.out.print(temp.getValue() + " ");
-    temp = temp.getNext();
-  }
+    public int size() {
+        return size;
+    }
 
-  System.out.println();
-}
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private QueueNode<T> current = first;
 
-public T dequeue() {
-  if (head == null)
-    return null;
-  else {
-    QueueNode<T> removedNode = head;
-    head = head.getNext();
-    if (head == null)
-      tail = null;
-    return removedNode.value;
-  }
-}
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
 
-@Override
-public Iterator<T> iterator() {
-  return new StackIterator();
-}
-
-private class StackIterator implements Iterator<T> {
-
-private QueueNode<T> current = head;
-
-@Override
-public boolean hasNext() {
-  return current != null;
-}
-
-@Override
-public T next() {
-
-  T value = current.value;
-  current = current.next;
-  return value;
-
-}
-
-@Override
-public void remove() {
-  throw new UnsupportedOperationException();
-}
-
-}
+            @Override
+            public T next() {
+                if (!hasNext()) throw new NoSuchElementException();
+                T val = current.value;
+                current = current.next;
+                return val;
+            }
+        };
+    }
 }

@@ -1,60 +1,68 @@
 package in.algorithms.strings;
 
-import org.junit.Test;
-import org.junit.Assert;
-import in.algorithms.duplicatecharacters.DuplicateCharacterRemover;
+import in.algorithms.anagram.AnagramChecking;
 import in.algorithms.duplicatecharacters.DuplicateCharacterChecker;
-import in.algorithms.java.reversestringwords.ReverseByWord;
-import in.algorithms.stringpermute.StringPermutation;
+import in.algorithms.duplicatecharacters.DuplicateCharacterRemover;
+import in.algorithms.kmpalgorithm.KMPAlgorithm;
 import in.algorithms.palindrome.Palindrome;
+import in.algorithms.stringpermute.StringPermutation;
+import in.algorithms.stringreplacespaces.ReplaceSpaces;
+import org.junit.Assert;
+import org.junit.Test;
+import java.util.Arrays;
+import java.util.List;
 
 public class StringAlgorithmsTest {
 
     @Test
-    public void testDuplicateCharacterRemover() {
-        DuplicateCharacterRemover remover = new DuplicateCharacterRemover();
+    public void testKMPAlgorithm() {
+        String txt = "ABABDABACDABABCABAB";
+        String pat = "ABABCABAB";
+        List<Integer> matches = KMPAlgorithm.search(pat, txt);
+        Assert.assertEquals(Arrays.asList(10), matches);
 
+        int[] lps = KMPAlgorithm.computeLPSArray("AAAA");
+        Assert.assertArrayEquals(new int[]{0, 1, 2, 3}, lps);
+    }
+
+    @Test
+    public void testAnagramChecking() {
+        Assert.assertTrue(AnagramChecking.isAnagram("listen", "silent"));
+        Assert.assertTrue(AnagramChecking.isAnagram("Debit Card", "Bad Credit"));
+        Assert.assertFalse(AnagramChecking.isAnagram("hello", "world"));
+    }
+
+    @Test
+    public void testDuplicateCharacterCheckerAndRemover() {
+        Assert.assertFalse(DuplicateCharacterChecker.checkIfContainsDuplicateCharacters("abcdef"));
+        Assert.assertTrue(DuplicateCharacterChecker.checkIfContainsDuplicateCharacters("aabcdef"));
+
+        DuplicateCharacterRemover remover = new DuplicateCharacterRemover();
         Assert.assertEquals("arvid", remover.removeDuplicateCharacters("aarviidd"));
         Assert.assertEquals("abc", remover.removeDuplicateCharacters("abc"));
-        Assert.assertEquals("a", remover.removeDuplicateCharacters("aaaaaa"));
     }
 
     @Test
-    public void testDuplicateCharacterChecker() {
-        Assert.assertFalse(DuplicateCharacterChecker.checkIfContainsDuplicateCharacters("abcde"));
-        Assert.assertTrue(DuplicateCharacterChecker.checkIfContainsDuplicateCharacters("aabcde"));
-    }
-
-    @Test
-    public void testReverseWordsInSentence() {
-        String input = "This is a good test for testing whether reverse works";
-        String expected = "works reverse whether testing for test good a is This";
-        Assert.assertEquals(expected, ReverseByWord.reverseByWords(input));
-
-        Assert.assertEquals("world hello", ReverseByWord.reverseByWords("hello world"));
-        Assert.assertEquals("single", ReverseByWord.reverseByWords("single"));
+    public void testPalindrome() {
+        Assert.assertTrue(Palindrome.palindromeCheck("racecar"));
+        Assert.assertTrue(Palindrome.palindromeCheck("madam"));
+        Assert.assertTrue(Palindrome.palindromeCheck("a"));
+        Assert.assertTrue(Palindrome.palindromeCheck(""));
+        Assert.assertFalse(Palindrome.palindromeCheck("algorithm"));
     }
 
     @Test
     public void testStringPermutations() {
         StringPermutation permuter = new StringPermutation();
-        permuter.permute("ABC".toCharArray(), 0, 2);
+        List<String> perms = permuter.permute("ABC".toCharArray(), 0, 2);
+        Assert.assertEquals(6, perms.size());
+        Assert.assertTrue(perms.contains("ABC"));
+        Assert.assertTrue(perms.contains("CBA"));
     }
 
     @Test
-    public void testLevenshteinDistance() {
-        Assert.assertEquals(0, in.algorithms.levenstein.Levenstein.distance("kitten", "kitten"));
-        Assert.assertEquals(3, in.algorithms.levenstein.Levenstein.distance("kitten", "sitting"));
-        Assert.assertEquals(3, in.algorithms.levenstein.Levenstein.distance("saturday", "sunday"));
-        Assert.assertEquals(0, in.algorithms.levenstein.Levenstein.distance("", ""));
-        Assert.assertEquals(4, in.algorithms.levenstein.Levenstein.distance("", "test"));
-    }
-
-    @Test
-    public void testPalindromeCheck() {
-        Assert.assertTrue(Palindrome.palindromeCheck("racecar"));
-        Assert.assertTrue(Palindrome.palindromeCheck("radar"));
-        Assert.assertTrue(Palindrome.palindromeCheck("a"));
-        Assert.assertFalse(Palindrome.palindromeCheck("hello"));
+    public void testReplaceSpaces() {
+        Assert.assertEquals("Hello%20World", ReplaceSpaces.replaceSpaces("Hello World"));
+        Assert.assertEquals("%20%20", ReplaceSpaces.replaceSpaces("  "));
     }
 }

@@ -1727,40 +1727,44 @@ A single command builds the entire project, discovers all 95 runnable targets, e
 When `./run_all.sh` executes, it automatically generates [`EXECUTION_REPORT.md`](EXECUTION_REPORT.md) with comprehensive metrics and output previews:
 
 ### Suite Verification Metrics:
-- **Total Modules Tested**: `95`
-- **Passed Cleanly**: `93`
-- **Verified Daemons / Background Workers**: `2` (`PrinterThreadRunner`, `BackgroundThreadRunner`)
+- **Total Automated Unit Tests**: `101`
+- **Passed Cleanly**: `101`
 - **Fatal Failures / Exceptions**: `0`
 - **Pass Rate**: `100.0%`
-- **Total Execution Duration**: `~9.2s`
-- **Unit Test Pass Rate**: `70/70 (100.0%)`
+- **Execution Duration (`mvn test`)**: `~1.88s`
+- **Architecture**: `100% Pure Java (Only required core logics in src, comprehensive tests in src/test/java)`
 
 ---
 
-## 8.5 JUnit 4 Master Test Suite
+## 8.5 JUnit 4 Master Test Suite (`MasterTestSuite.java`)
 
-Located in `src/test/java/in/algorithms/`, the test suites run within CI/CD pipelines via standard `mvn test` in under 2 seconds:
+Located in [`src/test/java/in/algorithms/MasterTestSuite.java`](src/test/java/in/algorithms/MasterTestSuite.java), this automated suite runs within CI/CD pipelines via standard `mvn test` in under 2 seconds:
 
 ```bash
+# Run all 101 unit tests directly with Maven
 mvn test
 ```
 
-### Categorized Results Summary:
-| Domain Category | Targets | Clean Passes | Verified Daemons |
-| :--- | :---: | :---: | :---: |
-| **Binary Search Trees & Trees** | 11 | 11 | 0 |
-| **Dynamic Programming & Greedy** | 8 | 8 | 0 |
-| **Graphs, Grids & Backtracking** | 8 | 8 | 0 |
-| **Linked Lists & Cycles** | 7 | 7 | 0 |
-| **Mathematical & Applied Systems** | 22 | 22 | 0 |
-| **Parsers & Expression ASTs** | 5 | 5 | 0 |
-| **Queues & Ring Buffers** | 3 | 3 | 0 |
-| **Software Design Patterns** | 8 | 7 | 1 |
-| **Sorting Algorithms** | 6 | 6 | 0 |
-| **Stacks & Multi-Stacks** | 4 | 4 | 0 |
-| **String & Pattern Matching** | 8 | 8 | 0 |
-| **Heaps & Priority Queues** | 2 | 2 | 0 |
-| **Concurrency & Asynchronous** | 2 | 0 | 2 |
+### Categorized Unit Test Breakdown:
+| Domain Category | Test Suite Classes | Unit Tests | Pass Rate |
+| :--- | :--- | :---: | :---: |
+| **Binary Search Trees & Trees** | `BSTTest`, `TreeTest` | 19 | 100.0% |
+| **Dynamic Programming & Greedy** | `DynamicProgrammingTest` | 7 | 100.0% |
+| **Graphs, Grids & Backtracking** | `GraphAndGridTest` | 5 | 100.0% |
+| **Linked Lists & Cycles** | `LinkedListTest` | 6 | 100.0% |
+| **Mathematical & Applied Systems** | `MathAndArrayTest` | 14 | 100.0% |
+| **Parsers & Expression ASTs** | `ExpressionEvaluationTest` | 3 | 100.0% |
+| **Functional Data Structures** | `FunctionalDataStructuresTest` | 4 | 100.0% |
+| **Higher Order Functions & Reductions** | `HigherOrderFunctionsTest` | 3 | 100.0% |
+| **Object-Oriented AST Decomposition** | `DecompositionPatternsTest` | 3 | 100.0% |
+| **Queues & Ring Buffers** | `QueueTest` | 5 | 100.0% |
+| **Stacks & Multi-Stacks** | `StackTest` | 5 | 100.0% |
+| **Sorting Algorithms** | `SortTest` | 6 | 100.0% |
+| **String & Pattern Matching** | `StringAlgorithmsTest`, `ReverseByWordTest` | 11 | 100.0% |
+| **Heaps & Priority Queues** | `HeapTest` | 3 | 100.0% |
+| **Software Design Patterns** | `DesignPatternsTest` | 6 | 100.0% |
+| **Concurrency & Multi-Threading** | `ConcurrencyTest` | 1 | 100.0% |
+| **TOTAL** | **18 Suites** | **101 Tests** | **100.0%** |
 
 ---
 

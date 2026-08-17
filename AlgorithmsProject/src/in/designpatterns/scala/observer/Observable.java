@@ -1,7 +1,7 @@
 package in.designpatterns.scala.observer;
 
 public interface Observable {
-    void registerObserver(Observer o);
-    void removeObserver(Observer o);
+    void registerObserver(Observer observer);
+    void removeObserver(Observer observer);
     void notifyObservers();
 }

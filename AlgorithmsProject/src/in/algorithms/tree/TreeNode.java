@@ -1,13 +1,19 @@
 package in.algorithms.tree;
 
-public class TreeNode {
-    public TreeNode left;
-    public TreeNode right;
-    public Integer data;
+public class TreeNode<T> {
+    public T value;
+    public TreeNode<T> left;
+    public TreeNode<T> right;
 
-    public TreeNode(TreeNode left, TreeNode right, Integer data) {
+    public TreeNode(T value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+    }
+
+    public TreeNode(T value, TreeNode<T> left, TreeNode<T> right) {
+        this.value = value;
         this.left = left;
         this.right = right;
-        this.data = data;
     }
 }

@@ -1,8 +1,17 @@
 package in.algorithms.decomposition.casesolution;
 
-public class Sum implements Expr {
-    private final Expr left, right;
-    public Sum(Expr left, Expr right) { this.left = left; this.right = right; }
-    @Override public int eval() { return left.eval() + right.eval(); }
-    @Override public String show() { return left.show() + "+" + right.show(); }
+public class Sum extends Expr {
+    public final Expr e1;
+    public final Expr e2;
+
+    public Sum(Expr e1, Expr e2) {
+        this.e1 = e1;
+        this.e2 = e2;
+    }
+
+    @Override
+    public int eval() { return e1.eval() + e2.eval(); }
+
+    @Override
+    public String show() { return e1.show() + " + " + e2.show(); }
 }

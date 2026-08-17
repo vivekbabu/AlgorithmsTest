@@ -1,180 +1,112 @@
 package in.algorithms.bst;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BSTOperations {
 
-    public BSTNode insertIntoBST(BSTNode root, int value) {
+    public static <T extends Comparable<T>> BSTNode<T> insert(BSTNode<T> root, T value) {
         if (root == null) {
-            return new BSTNode(value);
+            return new BSTNode<>(value);
         }
-        if (value < root.value) {
-            root.lchild = insertIntoBST(root.lchild, value);
-        } else if (value > root.value) {
-            root.rchild = insertIntoBST(root.rchild, value);
+        int cmp = value.compareTo(root.value);
+        if (cmp < 0) {
+            root.left = insert(root.left, value);
+        } else if (cmp > 0) {
+            root.right = insert(root.right, value);
         }
         return root;
     }
 
-    public void inOrder(BSTNode root) {
-        if (root != null) {
-            inOrder(root.lchild);
-            System.out.print(root.value + " ");
-            inOrder(root.rchild);
-        }
-    }
-
-    public void preOrder(BSTNode root) {
-        if (root != null) {
-            System.out.print(root.value + " ");
-            preOrder(root.lchild);
-            preOrder(root.rchild);
-        }
-    }
-
-    public void postOrder(BSTNode root) {
-        if (root != null) {
-            postOrder(root.lchild);
-            postOrder(root.rchild);
-            System.out.print(root.value + " ");
-        }
-    }
-
-    public void preOrderWithCallback(BSTNode root, Consumer<BSTNode> callback) {
-        if (root != null) {
-            callback.accept(root);
-            preOrderWithCallback(root.lchild, callback);
-            preOrderWithCallback(root.rchild, callback);
-        }
-    }
-
-    public boolean checkIfBST(BSTNode root) {
-        return isBSTUtil(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-    }
-
-    private boolean isBSTUtil(BSTNode node, int min, int max) {
-        if (node == null) return true;
-        if (node.value <= min || node.value >= max) return false;
-        return isBSTUtil(node.lchild, min, node.value) && isBSTUtil(node.rchild, node.value, max);
-    }
-
-    public int getTreeHeight(BSTNode root) {
-        if (root == null) return 0;
-        return 1 + Math.max(getTreeHeight(root.lchild), getTreeHeight(root.rchild));
-    }
-
-    public BSTNode giveMirrorTree(BSTNode root) {
-        if (root == null) return null;
-        BSTNode mirror = new BSTNode(root.value);
-        mirror.lchild = giveMirrorTree(root.rchild);
-        mirror.rchild = giveMirrorTree(root.lchild);
-        return mirror;
-    }
-
-    public void convertToMirror(BSTNode root) {
-        if (root != null) {
-            BSTNode temp = root.lchild;
-            root.lchild = root.rchild;
-            root.rchild = temp;
-            convertToMirror(root.lchild);
-            convertToMirror(root.rchild);
-        }
-    }
-
-    public boolean checkIfSubTree(BSTNode root, BSTNode subTree) {
-        if (subTree == null) return true;
+    public static <T extends Comparable<T>> boolean search(BSTNode<T> root, T value) {
         if (root == null) return false;
-        if (isIdentical(root, subTree)) return true;
-        return checkIfSubTree(root.lchild, subTree) || checkIfSubTree(root.rchild, subTree);
+        int cmp = value.compareTo(root.value);
+        if (cmp == 0) return true;
+        return cmp < 0 ? search(root.left, value) : search(root.right, value);
     }
 
-    public boolean isIdentical(BSTNode t1, BSTNode t2) {
-        if (t1 == null && t2 == null) return true;
-        if (t1 == null || t2 == null) return false;
-        return (t1.value == t2.value) && isIdentical(t1.lchild, t2.lchild) && isIdentical(t1.rchild, t2.rchild);
-    }
-
-    public int maxFromLeafToRoot(BSTNode root) {
-        if (root == null) return 0;
-        return root.value + Math.max(maxFromLeafToRoot(root.lchild), maxFromLeafToRoot(root.rchild));
-    }
-
-    public int maxFromLeafToLeaf(BSTNode root) {
-        int[] max = new int[]{Integer.MIN_VALUE};
-        maxPathUtil(root, max);
-        return max[0];
-    }
-
-    private int maxPathUtil(BSTNode root, int[] max) {
-        if (root == null) return 0;
-        int l = maxPathUtil(root.lchild, max);
-        int r = maxPathUtil(root.rchild, max);
-        if (root.lchild != null && root.rchild != null) {
-            max[0] = Math.max(max[0], l + r + root.value);
-            return Math.max(l, r) + root.value;
+    public static <T extends Comparable<T>> BSTNode<T> findMin(BSTNode<T> root) {
+        if (root == null) return null;
+        while (root.left != null) {
+            root = root.left;
         }
-        return (root.lchild == null) ? r + root.value : l + root.value;
+        return root;
     }
 
-    public BSTNode convertToBST(BSTNode root) {
-        BSTNode[] head = new BSTNode[1];
-        BSTNode[] prev = new BSTNode[1];
-        flattenToDLL(root, head, prev);
-        return head[0];
+    public static <T extends Comparable<T>> BSTNode<T> findMax(BSTNode<T> root) {
+        if (root == null) return null;
+        while (root.right != null) {
+            root = root.right;
+        }
+        return root;
     }
 
-    private void flattenToDLL(BSTNode root, BSTNode[] head, BSTNode[] prev) {
-        if (root == null) return;
-        flattenToDLL(root.lchild, head, prev);
-        if (prev[0] == null) {
-            head[0] = root;
+    public static <T extends Comparable<T>> BSTNode<T> delete(BSTNode<T> root, T value) {
+        if (root == null) return null;
+        int cmp = value.compareTo(root.value);
+        if (cmp < 0) {
+            root.left = delete(root.left, value);
+        } else if (cmp > 0) {
+            root.right = delete(root.right, value);
         } else {
-            root.lchild = prev[0];
-            prev[0].rchild = root;
+            if (root.left == null) return root.right;
+            if (root.right == null) return root.left;
+            BSTNode<T> minRight = findMin(root.right);
+            root.value = minRight.value;
+            root.right = delete(root.right, minRight.value);
         }
-        prev[0] = root;
-        flattenToDLL(root.rchild, head, prev);
+        return root;
     }
 
-    public void printInSpiralModel(BSTNode root) {
-        if (root == null) return;
-        Deque<BSTNode> s1 = new ArrayDeque<>();
-        Deque<BSTNode> s2 = new ArrayDeque<>();
-        s1.push(root);
+    public static <T extends Comparable<T>> List<T> inOrder(BSTNode<T> root) {
+        List<T> result = new ArrayList<>();
+        inOrderHelper(root, result);
+        return result;
+    }
 
-        while (!s1.isEmpty() || !s2.isEmpty()) {
-            while (!s1.isEmpty()) {
-                BSTNode temp = s1.pop();
-                System.out.print(temp.value + " ");
-                if (temp.rchild != null) s2.push(temp.rchild);
-                if (temp.lchild != null) s2.push(temp.lchild);
-            }
-            while (!s2.isEmpty()) {
-                BSTNode temp = s2.pop();
-                System.out.print(temp.value + " ");
-                if (temp.lchild != null) s1.push(temp.lchild);
-                if (temp.rchild != null) s1.push(temp.rchild);
-            }
+    private static <T extends Comparable<T>> void inOrderHelper(BSTNode<T> node, List<T> result) {
+        if (node != null) {
+            inOrderHelper(node.left, result);
+            result.add(node.value);
+            inOrderHelper(node.right, result);
         }
     }
 
-    public void printHeightWise(BSTNode root) {
-        int h = getTreeHeight(root);
-        for (int i = 1; i <= h; i++) {
-            printGivenLevel(root, i);
-            System.out.println();
+    public static <T extends Comparable<T>> List<T> preOrder(BSTNode<T> root) {
+        List<T> result = new ArrayList<>();
+        preOrderHelper(root, result);
+        return result;
+    }
+
+    private static <T extends Comparable<T>> void preOrderHelper(BSTNode<T> node, List<T> result) {
+        if (node != null) {
+            result.add(node.value);
+            preOrderHelper(node.left, result);
+            preOrderHelper(node.right, result);
         }
     }
 
-    public void printGivenLevel(BSTNode root, int level) {
-        if (root == null) return;
-        if (level == 1) {
-            System.out.print(root.value + " ");
-        } else if (level > 1) {
-            printGivenLevel(root.lchild, level - 1);
-            printGivenLevel(root.rchild, level - 1);
+    public static <T extends Comparable<T>> List<T> postOrder(BSTNode<T> root) {
+        List<T> result = new ArrayList<>();
+        postOrderHelper(root, result);
+        return result;
+    }
+
+    private static <T extends Comparable<T>> void postOrderHelper(BSTNode<T> node, List<T> result) {
+        if (node != null) {
+            postOrderHelper(node.left, result);
+            postOrderHelper(node.right, result);
+            result.add(node.value);
         }
+    }
+
+    public static <T extends Comparable<T>> int size(BSTNode<T> root) {
+        if (root == null) return 0;
+        return 1 + size(root.left) + size(root.right);
+    }
+
+    public static <T extends Comparable<T>> int height(BSTNode<T> root) {
+        if (root == null) return 0;
+        return 1 + Math.max(height(root.left), height(root.right));
     }
 }

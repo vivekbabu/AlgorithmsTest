@@ -1,5 +1,5 @@
 package in.designpatterns.scala.factory;
 
 public interface PizzaFactory {
-    Pizza createPizza(String type);
+    Pizza createPizza(String item);
 }

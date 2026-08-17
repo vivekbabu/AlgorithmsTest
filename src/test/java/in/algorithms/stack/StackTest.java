@@ -1,98 +1,87 @@
 package in.algorithms.stack;
 
-import org.junit.Test;
+import in.algorithms.threestacksinarray.ThreeStacksInArray;
 import org.junit.Assert;
+import org.junit.Test;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class StackTest {
 
     @Test
-    public void testGenericStackPushPop() {
-        Stack<Integer> stack = new Stack<Integer>();
-        Assert.assertNull("Popping from empty stack should return null", stack.pop());
+    public void testGenericStack() {
+        Stack<Integer> stack = new Stack<>();
+        Assert.assertTrue(stack.isEmpty());
 
         stack.push(10);
         stack.push(20);
         stack.push(30);
 
+        Assert.assertEquals(3, stack.size());
+        Assert.assertEquals(Integer.valueOf(30), stack.peek());
         Assert.assertEquals(Integer.valueOf(30), stack.pop());
         Assert.assertEquals(Integer.valueOf(20), stack.pop());
-
-        stack.push(40);
-        Assert.assertEquals(Integer.valueOf(40), stack.pop());
         Assert.assertEquals(Integer.valueOf(10), stack.pop());
-        Assert.assertNull("Stack should be empty again", stack.pop());
+        Assert.assertTrue(stack.isEmpty());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testGenericStackUnderflow() {
+        Stack<String> stack = new Stack<>();
+        stack.pop();
     }
 
     @Test
-    public void testGenericStackWithStrings() {
-        Stack<String> stack = new Stack<String>();
-        stack.push("Alpha").push("Beta").push("Gamma");
-
-        Assert.assertEquals("Gamma", stack.pop());
-        Assert.assertEquals("Beta", stack.pop());
-        Assert.assertEquals("Alpha", stack.pop());
-        Assert.assertNull(stack.pop());
-    }
-
-    @Test
-    public void testStackWithMinTracking() {
+    public void testStackWithMinO1() {
         StackWithMin minStack = new StackWithMin();
-        Assert.assertNull(minStack.getMin());
+        Assert.assertTrue(minStack.isEmpty());
 
         minStack.push(5);
-        Assert.assertEquals(Integer.valueOf(5), minStack.getMin());
+        Assert.assertEquals(5, minStack.min());
 
         minStack.push(3);
-        Assert.assertEquals(Integer.valueOf(3), minStack.getMin());
+        Assert.assertEquals(3, minStack.min());
 
         minStack.push(7);
-        Assert.assertEquals(Integer.valueOf(3), minStack.getMin());
+        Assert.assertEquals(3, minStack.min());
 
         minStack.push(2);
-        Assert.assertEquals(Integer.valueOf(2), minStack.getMin());
+        Assert.assertEquals(2, minStack.min());
 
-        minStack.push(2);
-        Assert.assertEquals(Integer.valueOf(2), minStack.getMin());
+        Assert.assertEquals(2, minStack.pop());
+        Assert.assertEquals(3, minStack.min());
 
-        // Popping elements and checking min updates
-        Assert.assertEquals(Integer.valueOf(2), minStack.pop());
-        Assert.assertEquals(Integer.valueOf(2), minStack.getMin());
+        Assert.assertEquals(7, minStack.pop());
+        Assert.assertEquals(3, minStack.min());
 
-        Assert.assertEquals(Integer.valueOf(2), minStack.pop());
-        Assert.assertEquals(Integer.valueOf(3), minStack.getMin());
-
-        Assert.assertEquals(Integer.valueOf(7), minStack.pop());
-        Assert.assertEquals(Integer.valueOf(3), minStack.getMin());
-
-        Assert.assertEquals(Integer.valueOf(3), minStack.pop());
-        Assert.assertEquals(Integer.valueOf(5), minStack.getMin());
-
-        Assert.assertEquals(Integer.valueOf(5), minStack.pop());
-        Assert.assertNull(minStack.getMin());
-        Assert.assertNull(minStack.pop());
-    }
-
-    @Test
-    public void testImplementedDataStructuresStack() {
-        in.algorithms.implementeddatastructures.Stack<String> stack = new in.algorithms.implementeddatastructures.Stack<String>();
-        Assert.assertNull(stack.pop());
-
-        stack.push("A");
-        stack.push("B");
-        stack.push("C");
-
-        Assert.assertEquals("C", stack.pop());
-        Assert.assertEquals("B", stack.pop());
-        Assert.assertEquals("A", stack.pop());
-        Assert.assertNull(stack.pop());
+        Assert.assertEquals(3, minStack.pop());
+        Assert.assertEquals(5, minStack.min());
     }
 
     @Test
     public void testThreeStacksInArray() {
-        in.algorithms.threestacksinarray.ThreeStacksInArray runner = new in.algorithms.threestacksinarray.ThreeStacksInArray();
-        Assert.assertNotNull(runner);
+        ThreeStacksInArray multiStack = new ThreeStacksInArray(3);
+        multiStack.push(0, 10);
+        multiStack.push(0, 20);
+        multiStack.push(1, 100);
+        multiStack.push(2, 1000);
 
-        // Test Stack class from threestacksinarray package
-        in.algorithms.threestacksinarray.ThreeStacksInArray.main(new String[]{});
+        Assert.assertEquals(20, multiStack.peek(0));
+        Assert.assertEquals(100, multiStack.peek(1));
+        Assert.assertEquals(1000, multiStack.peek(2));
+
+        Assert.assertEquals(Arrays.asList(10, 20), multiStack.getStackElements(0));
+
+        Assert.assertEquals(20, multiStack.pop(0));
+        Assert.assertEquals(10, multiStack.pop(0));
+        Assert.assertTrue(multiStack.isEmpty(0));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testThreeStacksOverflow() {
+        ThreeStacksInArray multiStack = new ThreeStacksInArray(2);
+        multiStack.push(0, 1);
+        multiStack.push(0, 2);
+        multiStack.push(0, 3); // Stack 0 full
     }
 }

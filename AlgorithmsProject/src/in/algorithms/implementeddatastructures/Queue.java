@@ -1,44 +1,49 @@
 package in.algorithms.implementeddatastructures;
 
+import java.util.NoSuchElementException;
+
 public class Queue<T> {
-private Node<T> front = null, rear = null;
+    private Node<T> head;
+    private Node<T> tail;
+    private int size = 0;
 
-public Queue<T> enqueue(T item) {
-  Node<T> newElement = new Node<T>(item);
-  if (front == null) {
-    front = rear = newElement;
-  } else {
-    rear.next = newElement;
-    rear = newElement;
-  }
-  return this;
-}
-
-public T dequeue() {
-  T frontElement = null;
-  if (front != null) {
-    frontElement = front.item;
-    if (front == rear) {
-      front = rear = null;
-    } else {
-      front = front.next;
+    public void enqueue(T item) {
+        Node<T> newNode = new Node<>(item);
+        if (tail != null) {
+            tail.next = newNode;
+        }
+        tail = newNode;
+        if (head == null) {
+            head = tail;
+        }
+        size++;
     }
-  }
 
-  return frontElement;
-}
+    public T dequeue() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue underflow");
+        }
+        T item = head.item;
+        head = head.next;
+        if (head == null) {
+            tail = null;
+        }
+        size--;
+        return item;
+    }
 
-public void printElements() {
-  Node<T> forwardPointer = front;
-  while (forwardPointer != null) {
-    System.out.print(forwardPointer.item + " ");
-    forwardPointer = forwardPointer.next;
-  }
-  System.out.println();
-}
+    public T peek() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        return head.item;
+    }
 
-public Node<T> getFront() {
-  return front;
-}
+    public boolean isEmpty() {
+        return head == null;
+    }
 
+    public int size() {
+        return size;
+    }
 }

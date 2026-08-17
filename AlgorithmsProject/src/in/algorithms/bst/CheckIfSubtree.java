@@ -1,12 +1,18 @@
 package in.algorithms.bst;
 
 public class CheckIfSubtree {
-    public static void main(String[] args) {
-        BSTOperations ops = new BSTOperations();
-        BSTNode root = new BSTNode(4,
-                new BSTNode(2, new BSTNode(1), new BSTNode(3)),
-                new BSTNode(6, new BSTNode(5), new BSTNode(7)));
-        BSTNode sub = new BSTNode(2, new BSTNode(1), new BSTNode(3));
-        System.out.println("Is subtree: " + ops.checkIfSubTree(root, sub));
+    public static <T extends Comparable<T>> boolean isSubtree(BSTNode<T> tree, BSTNode<T> subTree) {
+        if (subTree == null) return true;
+        if (tree == null) return false;
+        if (isIdentical(tree, subTree)) return true;
+        return isSubtree(tree.left, subTree) || isSubtree(tree.right, subTree);
+    }
+
+    public static <T extends Comparable<T>> boolean isIdentical(BSTNode<T> a, BSTNode<T> b) {
+        if (a == null && b == null) return true;
+        if (a == null || b == null) return false;
+        return a.value.compareTo(b.value) == 0 &&
+               isIdentical(a.left, b.left) &&
+               isIdentical(a.right, b.right);
     }
 }

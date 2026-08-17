@@ -1,7 +1,6 @@
 package in.algorithms.nqeens;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class NQueens {
@@ -11,15 +10,15 @@ public class NQueens {
         return result;
     }
 
-    private static void placeQueens(int k, int n, List<Integer> current, List<List<Integer>> result) {
-        if (k == n) {
+    private static void placeQueens(int row, int n, List<Integer> current, List<List<Integer>> result) {
+        if (row == n) {
             result.add(new ArrayList<>(current));
             return;
         }
         for (int col = 0; col < n; col++) {
             if (isSafe(col, current)) {
                 current.add(col);
-                placeQueens(k + 1, n, current, result);
+                placeQueens(row + 1, n, current, result);
                 current.remove(current.size() - 1);
             }
         }
@@ -29,17 +28,10 @@ public class NQueens {
         int row = queens.size();
         for (int r = 0; r < row; r++) {
             int c = queens.get(r);
-            if (c == col || Math.abs(c - col) == (row - r)) {
+            if (c == col || Math.abs(c - col) == Math.abs(r - row)) {
                 return false;
             }
         }
         return true;
-    }
-
-    public static void main(String[] args) {
-        List<List<Integer>> solutions4 = queens(4);
-        System.out.println("4-Queens solutions: " + solutions4.size());
-        List<List<Integer>> solutions8 = queens(8);
-        System.out.println("8-Queens solutions: " + solutions8.size());
     }
 }

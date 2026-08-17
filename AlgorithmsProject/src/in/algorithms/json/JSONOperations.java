@@ -1,19 +1,12 @@
 package in.algorithms.json;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class JSONOperations {
     public static String show(JSON json) {
-        if (json instanceof JSeq) {
-            JSeq seq = (JSeq) json;
-            return "[" + seq.elems.stream().map(JSONOperations::show).collect(Collectors.joining(", ")) + "]";
-        } else if (json instanceof JObj) {
-            JObj obj = (JObj) json;
-            return "{" + obj.bindings.entrySet().stream()
-                    .map(e -> "\"" + e.getKey() + "\": " + show(e.getValue()))
-                    .collect(Collectors.joining(", ")) + "}";
-        } else if (json instanceof JStr) {
+        if (json instanceof JStr) {
             return "\"" + ((JStr) json).str + "\"";
         } else if (json instanceof JNum) {
             return String.valueOf(((JNum) json).num);
@@ -21,12 +14,19 @@ public class JSONOperations {
             return String.valueOf(((JBool) json).b);
         } else if (json instanceof JNull) {
             return "null";
+        } else if (json instanceof JSeq) {
+            List<String> parts = new ArrayList<>();
+            for (JSON elem : ((JSeq) json).elems) {
+                parts.add(show(elem));
+            }
+            return "[" + String.join(", ", parts) + "]";
+        } else if (json instanceof JObj) {
+            List<String> parts = new ArrayList<>();
+            for (Map.Entry<String, JSON> entry : ((JObj) json).bindings.entrySet()) {
+                parts.add("\"" + entry.getKey() + "\": " + show(entry.getValue()));
+            }
+            return "{" + String.join(", ", parts) + "}";
         }
         return "";
-    }
-
-    public static void main(String[] args) {
-        JSeq jsonArray = new JSeq(Arrays.asList(new JStr("Java"), new JNum(42.0)));
-        System.out.println("Rendered JSON: " + show(jsonArray));
     }
 }

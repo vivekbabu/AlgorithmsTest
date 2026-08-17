@@ -1,8 +1,8 @@
 package in.designpatterns.scala.factory;
 
-public interface Pizza {
-    void prepare();
-    void bake();
-    void cut();
-    void box();
+public abstract class Pizza {
+    public abstract String prepare();
+    public abstract String bake();
+    public abstract String cut();
+    public abstract String box();
 }

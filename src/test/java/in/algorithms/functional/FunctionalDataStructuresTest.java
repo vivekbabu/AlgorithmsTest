@@ -1,27 +1,24 @@
 package in.algorithms.functional;
 
-import org.junit.Test;
-import org.junit.Assert;
-import in.algorithms.list.Cons;
-import in.algorithms.list.Nil;
-import in.algorithms.list.ListUtils;
 import in.algorithms.intsets.Empty;
 import in.algorithms.intsets.IntSet;
-import in.algorithms.json.JStr;
-import in.algorithms.json.JNum;
-import in.algorithms.json.JSeq;
-import in.algorithms.json.JSONOperations;
+import in.algorithms.json.*;
+import in.algorithms.list.Cons;
+import in.algorithms.list.List;
+import in.algorithms.list.ListUtils;
+import in.algorithms.list.Nil;
+import in.algorithms.listfunctions.ListFunctions;
+import org.junit.Assert;
+import org.junit.Test;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class FunctionalDataStructuresTest {
 
     @Test
     public void testChurchListConsAndNth() {
-        in.algorithms.list.List<Integer> list =
-                new Cons<Integer>(10,
-                        new Cons<Integer>(20,
-                                new Cons<Integer>(30,
-                                        new Nil<Integer>())));
+        List<Integer> list = new Cons<>(10, new Cons<>(20, new Cons<>(30, new Nil<>())));
 
         Assert.assertFalse(list.isEmpty());
         Assert.assertEquals(Integer.valueOf(10), list.head());
@@ -32,6 +29,16 @@ public class FunctionalDataStructuresTest {
         Assert.assertEquals(Integer.valueOf(10), ListUtils.nth(0, list));
         Assert.assertEquals(Integer.valueOf(20), ListUtils.nth(1, list));
         Assert.assertEquals(Integer.valueOf(30), ListUtils.nth(2, list));
+    }
+
+    @Test
+    public void testListFunctionsMapFilter() {
+        java.util.List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+        java.util.List<Integer> squares = ListFunctions.map(numbers, x -> x * x);
+        Assert.assertEquals(Arrays.asList(1, 4, 9, 16, 25), squares);
+
+        java.util.List<Integer> evens = ListFunctions.filter(numbers, x -> x % 2 == 0);
+        Assert.assertEquals(Arrays.asList(2, 4), evens);
     }
 
     @Test
@@ -54,14 +61,17 @@ public class FunctionalDataStructuresTest {
 
     @Test
     public void testJSONAlgebraicDataType() {
-        JSeq jsonArray = new JSeq(
-                Arrays.asList(
-                        new JStr("Antigravity"),
-                        new JNum(42.0)
-                )
-        );
+        Map<String, JSON> objMap = new LinkedHashMap<>();
+        objMap.put("name", new JStr("Antigravity"));
+        objMap.put("version", new JNum(2.0));
+        objMap.put("active", new JBool(true));
+        objMap.put("meta", new JNull());
 
-        String rendered = JSONOperations.show(jsonArray);
-        Assert.assertEquals("[\"Antigravity\", 42.0]", rendered);
+        JObj jsonObject = new JObj(objMap);
+        String renderedObj = JSONOperations.show(jsonObject);
+        Assert.assertEquals("{\"name\": \"Antigravity\", \"version\": 2.0, \"active\": true, \"meta\": null}", renderedObj);
+
+        JSeq jsonArray = new JSeq(Arrays.asList(new JStr("A"), new JNum(100.0)));
+        Assert.assertEquals("[\"A\", 100.0]", JSONOperations.show(jsonArray));
     }
 }

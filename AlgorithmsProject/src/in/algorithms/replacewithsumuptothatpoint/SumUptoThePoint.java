@@ -1,20 +1,14 @@
 package in.algorithms.replacewithsumuptothatpoint;
 
-import java.util.Arrays;
-
 public class SumUptoThePoint {
-    public static int[] runningSum(int[] nums) {
-        int[] result = new int[nums.length];
+    public static int[] prefixSum(int[] arr) {
+        if (arr == null) return null;
+        int[] res = new int[arr.length];
         int sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            sum += nums[i];
-            result[i] = sum;
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+            res[i] = sum;
         }
-        return result;
-    }
-
-    public static void main(String[] args) {
-        int[] arr = {1, 2, 3, 4};
-        System.out.println("Running sum: " + Arrays.toString(runningSum(arr)));
+        return res;
     }
 }

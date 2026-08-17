@@ -1,6 +1,6 @@
 package in.algorithms.decomposition.casesolution;
 
-public interface Expr {
-    int eval();
-    String show();
+public abstract class Expr {
+    public abstract int eval();
+    public abstract String show();
 }

@@ -1,11 +1,14 @@
 package in.algorithms.bst;
 
 public class CheckIfBST {
-    public static void main(String[] args) {
-        BSTOperations ops = new BSTOperations();
-        BSTNode root = new BSTNode(4,
-                new BSTNode(2, new BSTNode(1), new BSTNode(3)),
-                new BSTNode(6, new BSTNode(5), new BSTNode(7)));
-        System.out.println("Is valid BST: " + ops.checkIfBST(root));
+    public static <T extends Comparable<T>> boolean isBST(BSTNode<T> root) {
+        return isBSTHelper(root, null, null);
+    }
+
+    private static <T extends Comparable<T>> boolean isBSTHelper(BSTNode<T> node, T min, T max) {
+        if (node == null) return true;
+        if (min != null && node.value.compareTo(min) <= 0) return false;
+        if (max != null && node.value.compareTo(max) >= 0) return false;
+        return isBSTHelper(node.left, min, node.value) && isBSTHelper(node.right, node.value, max);
     }
 }

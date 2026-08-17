@@ -1,17 +1,24 @@
 package in.algorithms.balanced;
 
-public class BalancedExpression {
-    public static boolean checkIfBalanced(String s, int currentCount) {
-        if (s.isEmpty()) return currentCount == 0;
-        char head = s.charAt(0);
-        String tail = s.substring(1);
-        if (head == '(') return checkIfBalanced(tail, currentCount + 1);
-        if (head == ')') return currentCount > 0 && checkIfBalanced(tail, currentCount - 1);
-        return checkIfBalanced(tail, currentCount);
-    }
+import java.util.Stack;
 
-    public static void main(String[] args) {
-        System.out.println("(a+b)-((a-b))*(b) balanced: " + checkIfBalanced("(a+b)-((a-b))*(b)", 0));
-        System.out.println("a+b)-((a-b))*(b) balanced: " + checkIfBalanced("a+b)-((a-b))*(b)", 0));
+public class BalancedExpression {
+    public static boolean isBalanced(String expr) {
+        if (expr == null) return true;
+        Stack<Character> stack = new Stack<>();
+        for (char c : expr.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                stack.push(c);
+            } else if (c == ')' || c == '}' || c == ']') {
+                if (stack.isEmpty()) return false;
+                char top = stack.pop();
+                if ((c == ')' && top != '(') ||
+                    (c == '}' && top != '{') ||
+                    (c == ']' && top != '[')) {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
     }
 }

@@ -1,53 +1,38 @@
 package in.algorithms.java.reversestringwords;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class ReverseByWord {
-
-public static void main(String[] args) {
-  System.out
-      .println(reverseByWords("This is a good test for testing whether reverse works"));
-}
-
-public static String reverseByWords(String string) {
-  if (string == null || string.isEmpty()) {
-    return string;
-  }
-  char[] characters = string.toCharArray();
-  reverseTheString(characters, 0, characters.length - 1);
-  reverseEachWordsInTheString(characters);
-  return String.valueOf(characters);
-}
-
-private static void reverseEachWordsInTheString(char[] characters) {
-  int i = 0, forwardPointer = 0;
-  while (i <= characters.length) {
-    while (forwardPointer < characters.length
-        && characters[forwardPointer] != ' ') {
-      forwardPointer++;
+    public static String reverseByWords(String string) {
+        if (StringUtils.isEmpty(string)) {
+            return string;
+        }
+        char[] charArray = string.toCharArray();
+        reverse(charArray, 0, charArray.length - 1);
+        int first = 0;
+        int last = 0;
+        while (first < charArray.length) {
+            if (last < charArray.length && charArray[last] != ' ') {
+                last++;
+            } else {
+                reverse(charArray, first, last - 1);
+                last++;
+                first = last;
+            }
+        }
+        return new String(charArray);
     }
-    reverseTheString(characters, i, forwardPointer - 1);
-    i = forwardPointer = forwardPointer + 1;
-  }
-}
 
-private static void reverseTheString(char[] characters, int first, int last) {
-  if (first >= last) {
-    return;
-  }
-  int number = (last - first) + 1;
-  int middle = 0;
-  if (number % 2 == 0) {
-    middle = first + (last - first) / 2;
-  } else {
-    middle = first + (last - first) / 2 - 1;
-  }
-  for (int i = first, j = last; i <= middle; i++, j--) {
-    swap(characters, i, j);
-  }
-}
-
-private static void swap(char[] characters, int i, int j) {
-  char temp = characters[i];
-  characters[i] = characters[j];
-  characters[j] = temp;
-}
+    public static void reverse(char[] charArray, int first, int last) {
+        if (charArray == null || first >= last || first < 0 || last >= charArray.length) {
+            return;
+        }
+        while (first < last) {
+            char temp = charArray[first];
+            charArray[first] = charArray[last];
+            charArray[last] = temp;
+            first++;
+            last--;
+        }
+    }
 }

@@ -1,13 +1,20 @@
 package in.algorithms.bst;
 
 public class MirrorImageOfTree {
-    public static void main(String[] args) {
-        BSTOperations ops = new BSTOperations();
-        BSTNode root = new BSTNode(4,
-                new BSTNode(2, new BSTNode(1), new BSTNode(3)),
-                new BSTNode(6, new BSTNode(5), new BSTNode(7)));
-        BSTNode mirror = ops.giveMirrorTree(root);
-        ops.inOrder(mirror);
-        System.out.println();
+    public static <T extends Comparable<T>> BSTNode<T> mirror(BSTNode<T> root) {
+        if (root == null) return null;
+        BSTNode<T> left = mirror(root.left);
+        BSTNode<T> right = mirror(root.right);
+        root.left = right;
+        root.right = left;
+        return root;
+    }
+
+    public static <T extends Comparable<T>> boolean isMirror(BSTNode<T> n1, BSTNode<T> n2) {
+        if (n1 == null && n2 == null) return true;
+        if (n1 == null || n2 == null) return false;
+        return n1.value.compareTo(n2.value) == 0 &&
+               isMirror(n1.left, n2.right) &&
+               isMirror(n1.right, n2.left);
     }
 }

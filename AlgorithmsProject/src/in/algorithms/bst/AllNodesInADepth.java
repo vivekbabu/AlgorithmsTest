@@ -1,12 +1,22 @@
 package in.algorithms.bst;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AllNodesInADepth {
-    public static void main(String[] args) {
-        BSTOperations ops = new BSTOperations();
-        BSTNode root = new BSTNode(4,
-                new BSTNode(2, new BSTNode(1), new BSTNode(3)),
-                new BSTNode(6, new BSTNode(5), new BSTNode(7)));
-        ops.printGivenLevel(root, 2);
-        System.out.println();
+    public static <T extends Comparable<T>> List<T> getNodesAtDepth(BSTNode<T> root, int depth) {
+        List<T> result = new ArrayList<>();
+        collectNodesAtDepth(root, depth, 0, result);
+        return result;
+    }
+
+    private static <T extends Comparable<T>> void collectNodesAtDepth(BSTNode<T> node, int targetDepth, int currentDepth, List<T> result) {
+        if (node == null) return;
+        if (currentDepth == targetDepth) {
+            result.add(node.value);
+            return;
+        }
+        collectNodesAtDepth(node.left, targetDepth, currentDepth + 1, result);
+        collectNodesAtDepth(node.right, targetDepth, currentDepth + 1, result);
     }
 }

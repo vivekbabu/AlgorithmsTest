@@ -1,37 +1,37 @@
 package in.algorithms.intsets;
 
-public class NonEmpty implements IntSet {
-    private final int element;
-    private final IntSet left;
-    private final IntSet right;
+public class NonEmpty extends IntSet {
+    public final int elem;
+    public final IntSet left;
+    public final IntSet right;
 
-    public NonEmpty(int element, IntSet left, IntSet right) {
-        this.element = element;
+    public NonEmpty(int elem, IntSet left, IntSet right) {
+        this.elem = elem;
         this.left = left;
         this.right = right;
     }
 
     @Override
-    public IntSet incl(int x) {
-        if (x < element) return new NonEmpty(element, left.incl(x), right);
-        else if (x > element) return new NonEmpty(element, left, right.incl(x));
-        else return this;
+    public boolean contains(int x) {
+        if (x < elem) return left.contains(x);
+        if (x > elem) return right.contains(x);
+        return true;
     }
 
     @Override
-    public boolean contains(int x) {
-        if (x < element) return left.contains(x);
-        else if (x > element) return right.contains(x);
-        else return true;
+    public IntSet incl(int x) {
+        if (x < elem) return new NonEmpty(elem, left.incl(x), right);
+        if (x > elem) return new NonEmpty(elem, left, right.incl(x));
+        return this;
     }
 
     @Override
     public IntSet union(IntSet other) {
-        return left.union(right).union(other).incl(element);
+        return left.union(right).union(other).incl(elem);
     }
 
     @Override
     public String toString() {
-        return "{" + left + element + right + "}";
+        return "{" + left + elem + right + "}";
     }
 }

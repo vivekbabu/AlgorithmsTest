@@ -1,29 +1,22 @@
 package in.algorithms.combination;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AllCombination {
-    public static List<List<Integer>> combine(int n, int k) {
-        List<List<Integer>> result = new ArrayList<>();
-        backtrack(1, n, k, new ArrayList<>(), result);
+    public static <T> List<List<T>> generateCombinations(List<T> list) {
+        List<List<T>> result = new ArrayList<>();
+        if (list == null) return result;
+        backtrack(0, list, new ArrayList<>(), result);
         return result;
     }
 
-    private static void backtrack(int start, int n, int k, List<Integer> current, List<List<Integer>> result) {
-        if (current.size() == k) {
-            result.add(new ArrayList<>(current));
-            return;
-        }
-        for (int i = start; i <= n; i++) {
-            current.add(i);
-            backtrack(i + 1, n, k, current, result);
+    private static <T> void backtrack(int start, List<T> list, List<T> current, List<List<T>> result) {
+        result.add(new ArrayList<>(current));
+        for (int i = start; i < list.size(); i++) {
+            current.add(list.get(i));
+            backtrack(i + 1, list, current, result);
             current.remove(current.size() - 1);
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println("Combinations (4, 2): " + combine(4, 2));
     }
 }

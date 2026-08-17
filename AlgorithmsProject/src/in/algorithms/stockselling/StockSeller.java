@@ -1,18 +1,25 @@
 package in.algorithms.stockselling;
 
 public class StockSeller {
-    public static int maxProfit(int[] prices) {
-        int profit = 0;
+    public static int maxProfitSingleTransaction(int[] prices) {
+        if (prices == null || prices.length <= 1) return 0;
+        int minPrice = prices[0];
+        int maxProfit = 0;
         for (int i = 1; i < prices.length; i++) {
-            if (prices[i] > prices[i - 1]) {
-                profit += prices[i] - prices[i - 1];
-            }
+            maxProfit = Math.max(maxProfit, prices[i] - minPrice);
+            minPrice = Math.min(minPrice, prices[i]);
         }
-        return profit;
+        return maxProfit;
     }
 
-    public static void main(String[] args) {
-        int[] price = {100, 180, 260, 310, 40, 535, 695};
-        System.out.println("Max profit: " + maxProfit(price));
+    public static int maxProfitMultipleTransactions(int[] prices) {
+        if (prices == null || prices.length <= 1) return 0;
+        int totalProfit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > prices[i - 1]) {
+                totalProfit += prices[i] - prices[i - 1];
+            }
+        }
+        return totalProfit;
     }
 }

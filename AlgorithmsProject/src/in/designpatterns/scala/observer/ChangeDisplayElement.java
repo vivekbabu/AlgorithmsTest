@@ -3,26 +3,22 @@ package in.designpatterns.scala.observer;
 public class ChangeDisplayElement implements Observer, DisplayElement {
     private float temperature;
     private float humidity;
-    private float pressure;
+    private final Observable weatherData;
 
     public ChangeDisplayElement(Observable weatherData) {
+        this.weatherData = weatherData;
         weatherData.registerObserver(this);
     }
 
     @Override
-    public void update(float temp, float hum, float press) {
+    public void update(float temp, float humidity, float pressure) {
         this.temperature = temp;
-        this.humidity = hum;
-        this.pressure = press;
-        display();
+        this.humidity = humidity;
     }
 
     @Override
-    public void display() {
-        System.out.println("Current conditions: " + temperature + "F degrees and " + humidity + " % humidity");
-    }
+    public void display() {}
 
-    public float temperature() { return temperature; }
-    public float humidity() { return humidity; }
-    public float pressure() { return pressure; }
+    public float getTemperature() { return temperature; }
+    public float getHumidity() { return humidity; }
 }

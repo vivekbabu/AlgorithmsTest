@@ -1,8 +1,23 @@
 package in.designpatterns.scala.factory;
 
-public class SimpleBasePizza implements Pizza {
-    @Override public void prepare() { System.out.println("Default prepare : Preparing Base Pizza"); }
-    @Override public void bake() { System.out.println("Default bake : Preparing Base Pizza"); }
-    @Override public void cut() { System.out.println("Default cut : Preparing Base Pizza"); }
-    @Override public void box() { System.out.println("Default box : Preparing Base Pizza"); }
+public class SimpleBasePizza extends Pizza {
+    private final PizzaIngrediantFactory factory;
+
+    public SimpleBasePizza(PizzaIngrediantFactory factory) {
+        this.factory = factory;
+    }
+
+    @Override
+    public String prepare() { return "Preparing Base Pizza"; }
+
+    @Override
+    public String bake() { return "Baking Base Pizza"; }
+
+    @Override
+    public String cut() { return "Cutting Base Pizza"; }
+
+    @Override
+    public String box() { return "Boxing Base Pizza"; }
+
+    public PizzaIngrediantFactory getFactory() { return factory; }
 }

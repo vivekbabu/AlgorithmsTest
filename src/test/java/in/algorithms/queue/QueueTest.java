@@ -1,90 +1,81 @@
 package in.algorithms.queue;
 
-import org.junit.Test;
+import in.algorithms.circularqueue.CircularQueue;
 import org.junit.Assert;
-import java.util.Iterator;
+import org.junit.Test;
+import java.util.NoSuchElementException;
 
 public class QueueTest {
 
     @Test
-    public void testGenericQueueFIFO() {
-        Queue<Integer> queue = new Queue<Integer>();
-        Assert.assertNull("Empty queue dequeue should return null", queue.dequeue());
+    public void testGenericQueueOperations() {
+        Queue<String> queue = new Queue<>();
+        Assert.assertTrue(queue.isEmpty());
+        Assert.assertEquals(0, queue.size());
 
-        queue.enqueue(10);
-        queue.enqueue(20);
-        queue.enqueue(30);
-
-        Assert.assertEquals(Integer.valueOf(10), queue.dequeue());
-        Assert.assertEquals(Integer.valueOf(20), queue.dequeue());
-
-        queue.enqueue(40);
-        Assert.assertEquals(Integer.valueOf(30), queue.dequeue());
-        Assert.assertEquals(Integer.valueOf(40), queue.dequeue());
-        Assert.assertNull(queue.dequeue());
-    }
-
-    @Test
-    public void testGenericQueueIterator() {
-        Queue<String> queue = new Queue<String>();
         queue.enqueue("First");
         queue.enqueue("Second");
         queue.enqueue("Third");
 
-        Iterator<String> it = queue.iterator();
-        Assert.assertTrue(it.hasNext());
-        Assert.assertEquals("First", it.next());
-        Assert.assertTrue(it.hasNext());
-        Assert.assertEquals("Second", it.next());
-        Assert.assertTrue(it.hasNext());
-        Assert.assertEquals("Third", it.next());
-        Assert.assertFalse(it.hasNext());
+        Assert.assertFalse(queue.isEmpty());
+        Assert.assertEquals(3, queue.size());
+        Assert.assertEquals("First", queue.peek());
+
+        Assert.assertEquals("First", queue.dequeue());
+        Assert.assertEquals("Second", queue.dequeue());
+        Assert.assertEquals("Third", queue.dequeue());
+
+        Assert.assertTrue(queue.isEmpty());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testGenericQueueUnderflow() {
+        Queue<Integer> queue = new Queue<>();
+        queue.dequeue();
     }
 
     @Test
-    public void testCircularQueueScala() {
-        in.algorithms.circularqueue.CircularQueue cq = new in.algorithms.circularqueue.CircularQueue(3);
+    public void testCircularQueueOperations() {
+        CircularQueue<Integer> cq = new CircularQueue<>(3);
+        Assert.assertTrue(cq.isEmpty());
+        Assert.assertFalse(cq.isFull());
 
-        cq.enqueue(100);
-        cq.enqueue(200);
-        cq.enqueue(300);
+        Assert.assertTrue(cq.enqueue(10));
+        Assert.assertTrue(cq.enqueue(20));
+        Assert.assertTrue(cq.enqueue(30));
+        Assert.assertFalse(cq.enqueue(40)); // Full
 
-        cq.display();
+        Assert.assertTrue(cq.isFull());
+        Assert.assertEquals(3, cq.size());
+        Assert.assertEquals(Integer.valueOf(10), cq.peek());
 
-        // Dequeue and wrap around
-        cq.dequeue();
-        cq.enqueue(400);
+        Assert.assertEquals(Integer.valueOf(10), cq.dequeue());
+        Assert.assertTrue(cq.enqueue(40)); // Ring wrap-around
 
-        cq.dequeue();
-        cq.dequeue();
+        Assert.assertEquals(Integer.valueOf(20), cq.dequeue());
+        Assert.assertEquals(Integer.valueOf(30), cq.dequeue());
+        Assert.assertEquals(Integer.valueOf(40), cq.dequeue());
+        Assert.assertTrue(cq.isEmpty());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testCircularQueueUnderflow() {
+        CircularQueue<String> cq = new CircularQueue<>(2);
         cq.dequeue();
     }
 
     @Test
-    public void testCircularQueueOverflowHandled() {
-        in.algorithms.circularqueue.CircularQueue cq = new in.algorithms.circularqueue.CircularQueue(2);
-        cq.enqueue(1);
-        cq.enqueue(2);
-        cq.enqueue(3); // Handled gracefully with message
-        Assert.assertNotNull(cq);
-    }
+    public void testNodeBasedQueue() {
+        in.algorithms.implementeddatastructures.Queue<Integer> queue = new in.algorithms.implementeddatastructures.Queue<>();
+        Assert.assertTrue(queue.isEmpty());
 
-    @Test
-    public void testCircularQueueUnderflowHandled() {
-        in.algorithms.circularqueue.CircularQueue cq = new in.algorithms.circularqueue.CircularQueue(2);
-        cq.dequeue(); // Handled gracefully with message
-        Assert.assertNotNull(cq);
-    }
+        queue.enqueue(100);
+        queue.enqueue(200);
+        Assert.assertEquals(2, queue.size());
+        Assert.assertEquals(Integer.valueOf(100), queue.peek());
 
-    @Test
-    public void testImplementedDataStructuresQueue() {
-        in.algorithms.implementeddatastructures.Queue<Integer> q = new in.algorithms.implementeddatastructures.Queue<Integer>();
-        Assert.assertNull(q.dequeue());
-
-        q.enqueue(1);
-        q.enqueue(2);
-        Assert.assertEquals(Integer.valueOf(1), q.dequeue());
-        Assert.assertEquals(Integer.valueOf(2), q.dequeue());
-        Assert.assertNull(q.dequeue());
+        Assert.assertEquals(Integer.valueOf(100), queue.dequeue());
+        Assert.assertEquals(Integer.valueOf(200), queue.dequeue());
+        Assert.assertTrue(queue.isEmpty());
     }
 }

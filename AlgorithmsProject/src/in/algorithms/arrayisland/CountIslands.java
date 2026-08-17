@@ -1,53 +1,34 @@
 package in.algorithms.arrayisland;
 
 public class CountIslands {
-    private static final int ROW = 5;
-    private static final int COL = 5;
-    public static int count = 0;
-
-    private static final int[][] OFFSETS = {
-            {-1, -1}, {-1, 0}, {-1, 1},
-            {0, -1},           {0, 1},
-            {1, -1},  {1, 0},  {1, 1}
-    };
-
-    public static boolean isSafe(int[][] grid, int r, int c, boolean[][] visited) {
-        return (r >= 0) && (r < ROW) && (c >= 0) && (c < COL) && (grid[r][c] == 1 && !visited[r][c]);
-    }
-
-    public static void dfs(int[][] grid, int r, int c, boolean[][] visited) {
-        visited[r][c] = true;
-        for (int[] offset : OFFSETS) {
-            int nr = r + offset[0];
-            int nc = c + offset[1];
-            if (isSafe(grid, nr, nc, visited)) {
-                dfs(grid, nr, nc, visited);
-            }
-        }
-    }
-
     public static int countIslands(int[][] grid) {
-        boolean[][] visited = new boolean[ROW][COL];
-        count = 0;
-        for (int i = 0; i < ROW; i++) {
-            for (int j = 0; j < COL; j++) {
-                if (grid[i][j] == 1 && !visited[i][j]) {
+        if (grid == null || grid.length == 0) return 0;
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int count = 0;
+
+        boolean[][] visited = new boolean[rows][cols];
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 1 && !visited[r][c]) {
+                    dfs(grid, visited, r, c, rows, cols);
                     count++;
-                    dfs(grid, i, j, visited);
                 }
             }
         }
         return count;
     }
 
-    public static void main(String[] args) {
-        int[][] grid = {
-                {1, 1, 0, 1, 1},
-                {0, 1, 0, 0, 1},
-                {1, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0},
-                {1, 0, 1, 0, 1}
-        };
-        System.out.println("Number of islands: " + countIslands(grid));
+    private static void dfs(int[][] grid, boolean[][] visited, int r, int c, int rows, int cols) {
+        if (r < 0 || r >= rows || c < 0 || c >= cols || visited[r][c] || grid[r][c] == 0) {
+            return;
+        }
+        visited[r][c] = true;
+        int[] dr = {-1, 1, 0, 0, -1, -1, 1, 1};
+        int[] dc = {0, 0, -1, 1, -1, 1, -1, 1};
+        for (int i = 0; i < 8; i++) {
+            dfs(grid, visited, r + dr[i], c + dc[i], rows, cols);
+        }
     }
 }

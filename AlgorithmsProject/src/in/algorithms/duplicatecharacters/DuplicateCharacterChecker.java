@@ -1,18 +1,15 @@
 package in.algorithms.duplicatecharacters;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class DuplicateCharacterChecker {
-    public static boolean checkIfContainsDuplicateCharacters(String sentence) {
-        boolean[] charBooleans = new boolean[256];
-        for (int i = 0; i < sentence.length(); i++) {
-            char c = sentence.charAt(i);
-            if (charBooleans[c]) return true;
-            charBooleans[c] = true;
+    public static boolean checkIfContainsDuplicateCharacters(String str) {
+        if (str == null) return false;
+        Set<Character> seen = new HashSet<>();
+        for (char c : str.toCharArray()) {
+            if (!seen.add(c)) return true;
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(checkIfContainsDuplicateCharacters("Aabc"));
-        System.out.println(checkIfContainsDuplicateCharacters("Vivek babu"));
     }
 }

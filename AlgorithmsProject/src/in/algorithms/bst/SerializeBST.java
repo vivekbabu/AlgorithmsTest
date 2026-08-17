@@ -1,29 +1,39 @@
 package in.algorithms.bst;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class SerializeBST {
-    public static BSTNode deserializeBST(String treeAsString) {
-        BSTOperations ops = new BSTOperations();
-        String[] tokens = treeAsString.trim().split("\\s+");
-        BSTNode root = null;
-        for (String token : tokens) {
-            if (!token.isEmpty()) {
-                root = ops.insertIntoBST(root, Integer.parseInt(token));
-            }
-        }
-        return root;
-    }
-
-    public static String serializeBST(BSTNode root) {
+    public static String serialize(BSTNode<Integer> root) {
         StringBuilder sb = new StringBuilder();
-        BSTOperations ops = new BSTOperations();
-        ops.preOrderWithCallback(root, node -> sb.append(node.value).append(" "));
-        return sb.toString().trim();
+        serializeHelper(root, sb);
+        return sb.toString();
     }
 
-    public static void main(String[] args) {
-        String treeStr = "30 20 10 40 35 55";
-        BSTNode root = deserializeBST(treeStr);
-        String serialized = serializeBST(root);
-        System.out.println("Serialized equals original: " + serialized.equals(treeStr));
+    private static void serializeHelper(BSTNode<Integer> node, StringBuilder sb) {
+        if (node == null) {
+            sb.append("#,");
+            return;
+        }
+        sb.append(node.value).append(",");
+        serializeHelper(node.left, sb);
+        serializeHelper(node.right, sb);
+    }
+
+    public static BSTNode<Integer> deserialize(String data) {
+        if (data == null || data.isEmpty()) return null;
+        Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
+        return deserializeHelper(queue);
+    }
+
+    private static BSTNode<Integer> deserializeHelper(Queue<String> queue) {
+        if (queue.isEmpty()) return null;
+        String val = queue.poll();
+        if (val.equals("#")) return null;
+        BSTNode<Integer> node = new BSTNode<>(Integer.parseInt(val));
+        node.left = deserializeHelper(queue);
+        node.right = deserializeHelper(queue);
+        return node;
     }
 }

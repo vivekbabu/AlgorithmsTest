@@ -1,17 +1,15 @@
 package in.algorithms.sort;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 public class MergeSortWithOrdering {
     public static <T> List<T> mergesort(List<T> list, Comparator<T> comparator) {
-        int n = list.size();
-        if (n <= 1) return list;
-        int mid = n / 2;
+        if (list == null || list.size() <= 1) return list;
+        int mid = list.size() / 2;
         List<T> left = mergesort(list.subList(0, mid), comparator);
-        List<T> right = mergesort(list.subList(mid, n), comparator);
+        List<T> right = mergesort(list.subList(mid, list.size()), comparator);
         return merge(left, right, comparator);
     }
 
@@ -28,10 +26,5 @@ public class MergeSortWithOrdering {
         while (i < left.size()) result.add(left.get(i++));
         while (j < right.size()) result.add(right.get(j++));
         return result;
-    }
-
-    public static void main(String[] args) {
-        List<String> fruits = Arrays.asList("oranges", "apples", "lemons", "mangoes");
-        System.out.println(mergesort(fruits, Comparator.naturalOrder()));
     }
 }

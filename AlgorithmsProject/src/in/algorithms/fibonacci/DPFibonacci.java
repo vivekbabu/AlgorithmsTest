@@ -1,17 +1,17 @@
 package in.algorithms.fibonacci;
 
 public class DPFibonacci {
-    private static long[] memo = new long[100];
-
     public static long fibonacciWithDP(int n) {
-        if (n <= 0) return 0;
-        if (n == 1 || n == 2) return 1;
-        if (memo[n] != 0) return memo[n];
-        memo[n] = fibonacciWithDP(n - 1) + fibonacciWithDP(n - 2);
-        return memo[n];
-    }
-
-    public static void main(String[] args) {
-        System.out.println("Fibonacci DP(20): " + fibonacciWithDP(20));
+        if (n <= 0) return 0L;
+        if (n == 1) return 1L;
+        long prev2 = 0L;
+        long prev1 = 1L;
+        long current = 0L;
+        for (int i = 2; i <= n; i++) {
+            current = prev1 + prev2;
+            prev2 = prev1;
+            prev1 = current;
+        }
+        return current;
     }
 }

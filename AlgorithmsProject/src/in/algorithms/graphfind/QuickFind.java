@@ -1,11 +1,19 @@
 package in.algorithms.graphfind;
 
 public class QuickFind {
-    private int[] id;
+    private final int[] id;
+    private int count;
 
     public QuickFind(int n) {
+        count = n;
         id = new int[n];
-        for (int i = 0; i < n; i++) id[i] = i;
+        for (int i = 0; i < n; i++) {
+            id[i] = i;
+        }
+    }
+
+    public int find(int p) {
+        return id[p];
     }
 
     public boolean connected(int p, int q) {
@@ -15,17 +23,16 @@ public class QuickFind {
     public void union(int p, int q) {
         int pid = id[p];
         int qid = id[q];
+        if (pid == qid) return;
         for (int i = 0; i < id.length; i++) {
-            if (id[i] == pid) id[i] = qid;
+            if (id[i] == pid) {
+                id[i] = qid;
+            }
         }
+        count--;
     }
 
-    public static void main(String[] args) {
-        QuickFind qf = new QuickFind(10);
-        qf.union(4, 3);
-        qf.union(3, 8);
-        qf.union(6, 5);
-        System.out.println("4 and 8 connected: " + qf.connected(4, 8));
-        System.out.println("4 and 5 connected: " + qf.connected(4, 5));
+    public int count() {
+        return count;
     }
 }

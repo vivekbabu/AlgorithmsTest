@@ -1,72 +1,54 @@
 package in.algorithms.heap;
 
-import org.junit.Test;
 import org.junit.Assert;
-import java.util.Arrays;
-import java.util.List;
+import org.junit.Test;
 
 public class HeapTest {
 
     @Test
-    public void testMinHeapBuildAndExtract() {
-        Heap<Integer> minHeap = new Heap<Integer>() {
-            @Override
-            protected int compare(Integer e1, Integer e2) {
-                return e1.compareTo(e2);
-            }
-        };
+    public void testMinHeap() {
+        IntegerHeap minHeap = new IntegerHeap(5, true);
+        Assert.assertTrue(minHeap.isEmpty());
 
-        List<Integer> elements = Arrays.asList(30, 20, 15, 25, 10, 24, 29);
-        minHeap.buildHeap(elements);
+        minHeap.insert(25);
+        minHeap.insert(10);
+        minHeap.insert(30);
+        minHeap.insert(5);
 
-        Assert.assertEquals(Integer.valueOf(10), minHeap.extractMin());
-        Assert.assertEquals(Integer.valueOf(15), minHeap.extractMin());
-        Assert.assertEquals(Integer.valueOf(20), minHeap.extractMin());
+        Assert.assertEquals(4, minHeap.size());
+        Assert.assertEquals(5, minHeap.peek());
 
-        // Insert new element
-        minHeap.addToHeap(5);
-        Assert.assertEquals(Integer.valueOf(5), minHeap.extractMin());
-        Assert.assertEquals(Integer.valueOf(24), minHeap.extractMin());
-        Assert.assertEquals(Integer.valueOf(25), minHeap.extractMin());
-        Assert.assertEquals(Integer.valueOf(29), minHeap.extractMin());
-        Assert.assertEquals(Integer.valueOf(30), minHeap.extractMin());
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testHeapUnderflowThrowsException() {
-        Heap<Integer> heap = new Heap<Integer>() {
-            @Override
-            protected int compare(Integer e1, Integer e2) {
-                return e1.compareTo(e2);
-            }
-        };
-        heap.extractMin();
+        Assert.assertEquals(5, minHeap.extract());
+        Assert.assertEquals(10, minHeap.extract());
+        Assert.assertEquals(25, minHeap.extract());
+        Assert.assertEquals(30, minHeap.extract());
+        Assert.assertTrue(minHeap.isEmpty());
     }
 
     @Test
-    public void testKthSmallestInSortedMatrix() {
-        KthLargestOfMatrix finder = new KthLargestOfMatrix();
+    public void testMaxHeap() {
+        IntegerHeap maxHeap = new IntegerHeap(5, false);
+        maxHeap.insert(25);
+        maxHeap.insert(10);
+        maxHeap.insert(30);
+        maxHeap.insert(5);
 
-        Integer[][] matrix = new Integer[][]{
+        Assert.assertEquals(30, maxHeap.extract());
+        Assert.assertEquals(25, maxHeap.extract());
+        Assert.assertEquals(10, maxHeap.extract());
+        Assert.assertEquals(5, maxHeap.extract());
+    }
+
+    @Test
+    public void testKthLargestOfMatrix() {
+        int[][] matrix = {
                 {10, 20, 30, 40},
                 {15, 25, 35, 45},
                 {24, 29, 37, 48},
                 {32, 33, 39, 50}
         };
-
-        // 1st smallest = 10
-        Assert.assertEquals(Integer.valueOf(10), finder.findKthSmallestOfMatrix(matrix, 4, 4, 1));
-
-        // 2nd smallest = 15
-        Assert.assertEquals(Integer.valueOf(15), finder.findKthSmallestOfMatrix(matrix, 4, 4, 2));
-
-        // 3rd smallest = 20
-        Assert.assertEquals(Integer.valueOf(20), finder.findKthSmallestOfMatrix(matrix, 4, 4, 3));
-
-        // 4th smallest = 24
-        Assert.assertEquals(Integer.valueOf(24), finder.findKthSmallestOfMatrix(matrix, 4, 4, 4));
-
-        // 7th smallest = 30
-        Assert.assertEquals(Integer.valueOf(30), finder.findKthSmallestOfMatrix(matrix, 4, 4, 7));
+        Assert.assertEquals(50, KthLargestOfMatrix.findKthLargest(matrix, 1));
+        Assert.assertEquals(48, KthLargestOfMatrix.findKthLargest(matrix, 2));
+        Assert.assertEquals(45, KthLargestOfMatrix.findKthLargest(matrix, 3));
     }
 }

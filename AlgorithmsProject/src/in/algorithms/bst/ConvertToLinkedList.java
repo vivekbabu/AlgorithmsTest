@@ -1,16 +1,19 @@
 package in.algorithms.bst;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ConvertToLinkedList {
-    public static void main(String[] args) {
-        BSTOperations ops = new BSTOperations();
-        BSTNode root = new BSTNode(4,
-                new BSTNode(2, new BSTNode(1), new BSTNode(3)),
-                new BSTNode(5));
-        BSTNode head = ops.convertToBST(root);
-        while (head != null) {
-            System.out.print(head.value + " ");
-            head = head.rchild;
-        }
-        System.out.println();
+    public static <T extends Comparable<T>> List<T> convertToList(BSTNode<T> root) {
+        List<T> list = new ArrayList<>();
+        inOrder(root, list);
+        return list;
+    }
+
+    private static <T extends Comparable<T>> void inOrder(BSTNode<T> node, List<T> list) {
+        if (node == null) return;
+        inOrder(node.left, list);
+        list.add(node.value);
+        inOrder(node.right, list);
     }
 }

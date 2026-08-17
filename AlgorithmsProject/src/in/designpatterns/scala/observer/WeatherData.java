@@ -10,26 +10,30 @@ public class WeatherData implements Observable {
     private float pressure;
 
     @Override
-    public void registerObserver(Observer o) {
-        observers.add(o);
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
     }
 
     @Override
-    public void removeObserver(Observer o) {
-        observers.remove(o);
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
     }
 
     @Override
     public void notifyObservers() {
-        for (Observer o : observers) {
-            o.update(temperature, humidity, pressure);
+        for (Observer observer : observers) {
+            observer.update(temperature, humidity, pressure);
         }
     }
 
-    public void setMeasurements(float temp, float hum, float press) {
-        this.temperature = temp;
-        this.humidity = hum;
-        this.pressure = press;
+    public void setMeasurements(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
         notifyObservers();
     }
+
+    public float getTemperature() { return temperature; }
+    public float getHumidity() { return humidity; }
+    public float getPressure() { return pressure; }
 }

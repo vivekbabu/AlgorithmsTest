@@ -1,57 +1,45 @@
 package in.algorithms.stack;
 
+import java.util.NoSuchElementException;
+
 public class StackWithMin {
+    private final Stack<Integer> valueStack = new Stack<>();
+    private final Stack<Integer> minStack = new Stack<>();
 
-class NodeWithMin {
-int value;
-int min;
+    public void push(int value) {
+        valueStack.push(value);
+        if (minStack.isEmpty() || value <= minStack.peek()) {
+            minStack.push(value);
+        }
+    }
 
-@Override
-public String toString() {
-  return "[" + value + " , " + min + "]";
-}
+    public int pop() {
+        if (valueStack.isEmpty()) {
+            throw new NoSuchElementException("Stack underflow");
+        }
+        int value = valueStack.pop();
+        if (value == minStack.peek()) {
+            minStack.pop();
+        }
+        return value;
+    }
 
-public NodeWithMin(Integer element, Integer t) {
-  this.value = element;
-  this.min = t;
-}
-}
+    public int peek() {
+        return valueStack.peek();
+    }
 
-private Stack<NodeWithMin> stack;
+    public int min() {
+        if (minStack.isEmpty()) {
+            throw new NoSuchElementException("Stack is empty");
+        }
+        return minStack.peek();
+    }
 
-public StackWithMin() {
-  stack = new Stack<NodeWithMin>();
-}
+    public boolean isEmpty() {
+        return valueStack.isEmpty();
+    }
 
-public StackWithMin push(Integer element) {
-
-  stack.push(new NodeWithMin(element, min(element)));
-  return this;
-}
-
-protected Integer min(Integer value) {
-  if (stack.head == null)
-    return value;
-  else
-    return stack.head.value.value < value ? stack.head.value.value : value;
-}
-
-public void printStack() {
-  stack.printStack();
-}
-
-public Integer pop() {
-  NodeWithMin value = stack.pop();
-  if (value == null)
-    return null;
-  else
-    return value.value;
-}
-
-public Integer getMin() {
-  if (stack.head == null)
-    return null;
-  else
-    return stack.head.value.min;
-}
+    public int size() {
+        return valueStack.size();
+    }
 }

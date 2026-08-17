@@ -1,26 +1,26 @@
 package in.algorithms.listfunctions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class ListFunctions {
-    public static <T> List<T> flatten(List<?> list) {
-        List<T> flattened = new ArrayList<>();
-        for (Object item : list) {
-            if (item instanceof List<?>) {
-                flattened.addAll(flatten((List<?>) item));
-            } else {
-                @SuppressWarnings("unchecked")
-                T val = (T) item;
-                flattened.add(val);
-            }
+    public static <T, R> List<R> map(List<T> list, Function<T, R> fn) {
+        List<R> result = new ArrayList<>();
+        for (T item : list) {
+            result.add(fn.apply(item));
         }
-        return flattened;
+        return result;
     }
 
-    public static void main(String[] args) {
-        List<?> nested = Arrays.asList(Arrays.asList(1, 1), 2, Arrays.asList(3, Arrays.asList(5, 8)));
-        System.out.println("Flattened: " + flatten(nested));
+    public static <T> List<T> filter(List<T> list, Predicate<T> predicate) {
+        List<T> result = new ArrayList<>();
+        for (T item : list) {
+            if (predicate.test(item)) {
+                result.add(item);
+            }
+        }
+        return result;
     }
 }

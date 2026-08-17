@@ -1,83 +1,68 @@
 package in.algorithms.threestacksinarray;
 
-class Stack {
-
-int stackTops[];
-int stack[];
-int stackSize;
-int numOfStacks;
-
-public Stack(int numOfStacks, int stackSize) {
-  this.stack = new int[numOfStacks * stackSize];
-  this.stackTops = new int[numOfStacks];
-  this.stackSize = stackSize;
-  this.numOfStacks = numOfStacks;
-}
-
-public void push(int stackNumber, int value) {
-
-  if (stackNumber < 0 || stackNumber > numOfStacks - 1)
-    System.out.println("Cannot insert " + value + ". Invalid stack number");
-  else if (stackTops[stackNumber] == stackSize) {
-    System.out.println("Cannot insert " + value + ". The stack is full");
-  } else {
-    System.out.println(value + " inserted into stack " + stackNumber);
-    int index = stackNumber * stackSize + stackTops[stackNumber];
-    stack[index] = value;
-    stackTops[stackNumber]++;
-  }
-}
-
-public Integer pop(int stackNumber) {
-  if (stackNumber < 0 || stackNumber > numOfStacks - 1) {
-    System.out.println("Cannot pop. Invalid stack number");
-    return null;
-  } else if (stackTops[stackNumber] == 0) {
-    System.out.println("Cannot pop from stack " + stackNumber+" Stack Empty");
-    return null;
-  } else {
-    int index = stackNumber * stackSize + stackTops[stackNumber] - 1;
-    stackTops[stackNumber]--;
-    System.out.println(stack[index]+ " popped from stack " + stackNumber);
-    return stack[index];
-  }
-}
-
-public void printStacks() {
-  for (int i = 0; i < numOfStacks; i++) {
-    System.out.print("Contents of stack " + i + " are ");
-    for (int j = i * stackSize; j < i * stackSize + stackTops[i]; j++) {
-      System.out.print(stack[j] + " ");
-    }
-    System.out.println();
-  }
-}
-}
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ThreeStacksInArray {
-  public static void main(String[] args) {
-    Stack stack = new Stack(3, 3);
-    stack.printStacks();
-    stack.push(0, 1);
-    stack.push(1, 1);
-    stack.push(2, 1);
-    stack.push(3, 1);
-    stack.printStacks();
-    stack.push(0, 2);
-    stack.push(0, 4);
-    stack.push(0, 4);
-    stack.printStacks();
-    stack.push(1, 2);
-    stack.push(1, 4);
-    stack.push(2, 4);
-    stack.push(2, 5);
-    stack.printStacks();
-    stack.pop(1);
-    stack.pop(2);
-    stack.pop(2);
-    stack.pop(2);
-    stack.pop(2);
-    stack.printStacks();
-    
-  }
+    private final int stackSize;
+    private final int[] buffer;
+    private final int[] stackPointers = {-1, -1, -1};
+
+    public ThreeStacksInArray(int stackSize) {
+        this.stackSize = stackSize;
+        this.buffer = new int[stackSize * 3];
+    }
+
+    public void push(int stackNum, int value) {
+        if (stackNum < 0 || stackNum > 2) {
+            throw new IllegalArgumentException("Invalid stack number: " + stackNum);
+        }
+        if (stackPointers[stackNum] + 1 >= stackSize) {
+            throw new IllegalStateException("Stack " + stackNum + " is full");
+        }
+        stackPointers[stackNum]++;
+        buffer[absTopOfStack(stackNum)] = value;
+    }
+
+    public int pop(int stackNum) {
+        if (stackNum < 0 || stackNum > 2) {
+            throw new IllegalArgumentException("Invalid stack number: " + stackNum);
+        }
+        if (stackPointers[stackNum] == -1) {
+            throw new NoSuchElementException("Stack " + stackNum + " is empty");
+        }
+        int val = buffer[absTopOfStack(stackNum)];
+        buffer[absTopOfStack(stackNum)] = 0;
+        stackPointers[stackNum]--;
+        return val;
+    }
+
+    public int peek(int stackNum) {
+        if (stackNum < 0 || stackNum > 2) {
+            throw new IllegalArgumentException("Invalid stack number: " + stackNum);
+        }
+        if (stackPointers[stackNum] == -1) {
+            throw new NoSuchElementException("Stack " + stackNum + " is empty");
+        }
+        return buffer[absTopOfStack(stackNum)];
+    }
+
+    public boolean isEmpty(int stackNum) {
+        if (stackNum < 0 || stackNum > 2) throw new IllegalArgumentException();
+        return stackPointers[stackNum] == -1;
+    }
+
+    public List<Integer> getStackElements(int stackNum) {
+        if (stackNum < 0 || stackNum > 2) throw new IllegalArgumentException();
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i <= stackPointers[stackNum]; i++) {
+            list.add(buffer[stackNum * stackSize + i]);
+        }
+        return list;
+    }
+
+    private int absTopOfStack(int stackNum) {
+        return stackNum * stackSize + stackPointers[stackNum];
+    }
 }

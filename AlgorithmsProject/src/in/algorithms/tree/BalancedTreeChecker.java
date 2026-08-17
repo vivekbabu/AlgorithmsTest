@@ -1,17 +1,20 @@
 package in.algorithms.tree;
 
 public class BalancedTreeChecker {
-    public int minDepth(TreeNode treeNode) {
-        if (treeNode == null) return 0;
-        return 1 + Math.min(minDepth(treeNode.left), minDepth(treeNode.right));
+    public static <T> boolean isBalanced(TreeNode<T> root) {
+        return checkHeight(root) != -1;
     }
 
-    public int maxDepth(TreeNode treeNode) {
-        if (treeNode == null) return 0;
-        return 1 + Math.max(maxDepth(treeNode.left), maxDepth(treeNode.right));
-    }
+    private static <T> int checkHeight(TreeNode<T> node) {
+        if (node == null) return 0;
+        int leftHeight = checkHeight(node.left);
+        if (leftHeight == -1) return -1;
+        int rightHeight = checkHeight(node.right);
+        if (rightHeight == -1) return -1;
 
-    public boolean isBalanced(TreeNode treeNode) {
-        return Math.abs(maxDepth(treeNode) - minDepth(treeNode)) <= 1;
+        if (Math.abs(leftHeight - rightHeight) > 1) {
+            return -1;
+        }
+        return 1 + Math.max(leftHeight, rightHeight);
     }
 }

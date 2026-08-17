@@ -3,36 +3,26 @@ package in.algorithms.bfs;
 import java.util.*;
 
 public class BFS {
-    public static void bfsTraversal(Map<Integer, List<Integer>> adj, int start) {
+    public static List<Integer> traverse(Map<Integer, List<Integer>> adjList, int startNode) {
+        List<Integer> result = new ArrayList<>();
+        if (adjList == null || !adjList.containsKey(startNode)) return result;
+
         Set<Integer> visited = new HashSet<>();
         Queue<Integer> queue = new LinkedList<>();
 
-        visited.add(start);
-        queue.add(start);
+        queue.add(startNode);
+        visited.add(startNode);
 
         while (!queue.isEmpty()) {
             int node = queue.poll();
-            System.out.print(node + " ");
-
-            List<Integer> neighbors = adj.getOrDefault(node, Collections.emptyList());
-            for (int neighbor : neighbors) {
+            result.add(node);
+            for (int neighbor : adjList.getOrDefault(node, Collections.emptyList())) {
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
                     queue.add(neighbor);
                 }
             }
         }
-        System.out.println();
-    }
-
-    public static void main(String[] args) {
-        Map<Integer, List<Integer>> adj = new HashMap<>();
-        adj.put(0, Arrays.asList(1, 2));
-        adj.put(1, Arrays.asList(2));
-        adj.put(2, Arrays.asList(0, 3));
-        adj.put(3, Arrays.asList(3));
-
-        System.out.print("BFS from vertex 2: ");
-        bfsTraversal(adj, 2);
+        return result;
     }
 }

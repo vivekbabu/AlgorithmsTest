@@ -1,18 +1,14 @@
 package in.designpatterns.scala.factory;
 
 public class PizzaStore {
-    private PizzaFactory pizzaFactory = new SimplePizzaFactory();
+    private final PizzaFactory factory;
 
-    public void setPizzaFactory(PizzaFactory factory) {
-        this.pizzaFactory = factory;
-    }
-
-    public void pizzaFactory_$eq(PizzaFactory factory) {
-        this.pizzaFactory = factory;
+    public PizzaStore(PizzaFactory factory) {
+        this.factory = factory;
     }
 
     public Pizza orderPizza(String type) {
-        Pizza pizza = pizzaFactory.createPizza(type);
+        Pizza pizza = factory.createPizza(type);
         pizza.prepare();
         pizza.bake();
         pizza.cut();

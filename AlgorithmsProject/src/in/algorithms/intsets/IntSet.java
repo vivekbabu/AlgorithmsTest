@@ -1,7 +1,7 @@
 package in.algorithms.intsets;
 
-public interface IntSet {
-    IntSet incl(int x);
-    boolean contains(int x);
-    IntSet union(IntSet other);
+public abstract class IntSet {
+    public abstract boolean contains(int x);
+    public abstract IntSet incl(int x);
+    public abstract IntSet union(IntSet other);
 }

@@ -1,7 +1,7 @@
 package in.algorithms.sort;
 
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -9,14 +9,10 @@ import java.util.List;
 public class SortTest {
 
     @Test
-    public void testRadixSort() {
-        int[] arr = {170, 45, 75, 90, 802, 24, 2, 66};
-        RadixSort.main(new String[]{});
-
-        int[] input = {9, 182, 34, 12, 5, 0, 77, 4};
-        RadixSort.radixsort(input, input.length);
-        int[] expected = {0, 4, 5, 9, 12, 34, 77, 182};
-        Assert.assertArrayEquals(expected, input);
+    public void testQuickSort() {
+        int[] arr = {10, 7, 8, 9, 1, 5};
+        QuickSort.sort(arr, 0, arr.length - 1);
+        Assert.assertArrayEquals(new int[]{1, 5, 7, 8, 9, 10}, arr);
     }
 
     @Test
@@ -27,17 +23,13 @@ public class SortTest {
     }
 
     @Test
-    public void testMergeSortStringsWithComparator() {
+    public void testMergeSortWithCustomComparator() {
         List<String> list = Arrays.asList("zebra", "apple", "mango", "banana");
         List<String> sorted = MergeSortWithOrdering.mergesort(list, Comparator.naturalOrder());
         Assert.assertEquals(Arrays.asList("apple", "banana", "mango", "zebra"), sorted);
-    }
 
-    @Test
-    public void testQuickSort() {
-        int[] arr = {10, 7, 8, 9, 1, 5};
-        QuickSort.sort(arr, 0, arr.length - 1);
-        Assert.assertArrayEquals(new int[]{1, 5, 7, 8, 9, 10}, arr);
+        List<String> reverseSorted = MergeSortWithOrdering.mergesort(list, Comparator.reverseOrder());
+        Assert.assertEquals(Arrays.asList("zebra", "mango", "banana", "apple"), reverseSorted);
     }
 
     @Test
@@ -45,5 +37,23 @@ public class SortTest {
         int[] arr = {12, 11, 13, 5, 6};
         InsertionSort.sort(arr);
         Assert.assertArrayEquals(new int[]{5, 6, 11, 12, 13}, arr);
+    }
+
+    @Test
+    public void testRadixSort() {
+        int[] arr = {170, 45, 75, 90, 802, 24, 2, 66};
+        RadixSort.radixsort(arr, arr.length);
+        Assert.assertArrayEquals(new int[]{2, 24, 45, 66, 75, 90, 170, 802}, arr);
+    }
+
+    @Test
+    public void testAllSortsBubbleAndSelection() {
+        int[] arr1 = {64, 34, 25, 12, 22, 11, 90};
+        AllSorts.bubbleSort(arr1);
+        Assert.assertArrayEquals(new int[]{11, 12, 22, 25, 34, 64, 90}, arr1);
+
+        int[] arr2 = {64, 25, 12, 22, 11};
+        AllSorts.selectionSort(arr2);
+        Assert.assertArrayEquals(new int[]{11, 12, 22, 25, 64}, arr2);
     }
 }

@@ -3,17 +3,15 @@ package in.algorithms.anagram;
 import java.util.Arrays;
 
 public class AnagramChecking {
-    public static boolean areAnagrams(String s1, String s2) {
-        if (s1.length() != s2.length()) return false;
-        char[] a1 = s1.toCharArray();
-        char[] a2 = s2.toCharArray();
-        Arrays.sort(a1);
-        Arrays.sort(a2);
-        return Arrays.equals(a1, a2);
-    }
-
-    public static void main(String[] args) {
-        System.out.println("listen and silent: " + areAnagrams("listen", "silent"));
-        System.out.println("triangle and integral: " + areAnagrams("triangle", "integral"));
+    public static boolean isAnagram(String s1, String s2) {
+        if (s1 == null || s2 == null) return false;
+        String clean1 = s1.replaceAll("\\s", "").toLowerCase();
+        String clean2 = s2.replaceAll("\\s", "").toLowerCase();
+        if (clean1.length() != clean2.length()) return false;
+        char[] c1 = clean1.toCharArray();
+        char[] c2 = clean2.toCharArray();
+        Arrays.sort(c1);
+        Arrays.sort(c2);
+        return Arrays.equals(c1, c2);
     }
 }

@@ -1,22 +1,19 @@
 package in.algorithms.pairwithsumx;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PairWithSumX {
-    public static boolean hasPairWithSum(List<Integer> list, int sum) {
-        Set<Integer> set = new HashSet<>();
-        for (int val : list) {
-            if (set.contains(sum - val)) return true;
-            set.add(val);
+    public static List<List<Integer>> findPairs(int[] arr, int targetSum) {
+        List<List<Integer>> pairs = new ArrayList<>();
+        if (arr == null) return pairs;
+        Set<Integer> seen = new HashSet<>();
+        for (int num : arr) {
+            int complement = targetSum - num;
+            if (seen.contains(complement)) {
+                pairs.add(Arrays.asList(complement, num));
+            }
+            seen.add(num);
         }
-        return false;
-    }
-
-    public static void main(String[] args) {
-        List<Integer> list = Arrays.asList(1, 4, 45, 6, 10, -8);
-        System.out.println("Has pair with sum 16: " + hasPairWithSum(list, 16));
+        return pairs;
     }
 }

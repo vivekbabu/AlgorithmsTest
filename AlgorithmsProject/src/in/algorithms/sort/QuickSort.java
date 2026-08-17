@@ -1,14 +1,11 @@
 package in.algorithms.sort;
 
-import java.util.Arrays;
-
 public class QuickSort {
     public static void sort(int[] arr, int low, int high) {
-        if (low < high) {
-            int pi = partition(arr, low, high);
-            sort(arr, low, pi - 1);
-            sort(arr, pi + 1, high);
-        }
+        if (arr == null || low >= high) return;
+        int pi = partition(arr, low, high);
+        sort(arr, low, pi - 1);
+        sort(arr, pi + 1, high);
     }
 
     private static int partition(int[] arr, int low, int high) {
@@ -26,11 +23,5 @@ public class QuickSort {
         arr[i + 1] = arr[high];
         arr[high] = temp;
         return i + 1;
-    }
-
-    public static void main(String[] args) {
-        int[] arr = {10, 7, 8, 9, 1, 5};
-        sort(arr, 0, arr.length - 1);
-        System.out.println("QuickSorted: " + Arrays.toString(arr));
     }
 }

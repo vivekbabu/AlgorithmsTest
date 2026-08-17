@@ -1,38 +1,40 @@
 package in.algorithms.implementeddatastructures;
 
+import java.util.NoSuchElementException;
+
 public class Stack<T> {
+    private Node<T> top;
+    private int size = 0;
 
-private Node<T> top = null;
+    public void push(T item) {
+        Node<T> newNode = new Node<>(item);
+        newNode.next = top;
+        top = newNode;
+        size++;
+    }
 
-public Stack<T> push(T item) {
-  Node<T> newElement = new Node<T>(item);
-  if (top != null) {
-    newElement.next = top;
-  }
-  top = newElement;
-  return this;
-}
+    public T pop() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Stack underflow");
+        }
+        T item = top.item;
+        top = top.next;
+        size--;
+        return item;
+    }
 
-public T pop() {
-  T item = null;
-  if (top != null) {
-    item = top.item;
-    top = top.next;
-  }
-  return item;
-}
+    public T peek() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Stack is empty");
+        }
+        return top.item;
+    }
 
-public void printElements() {
-  Node<T> forward = top;
-  while (forward != null) {
-    System.out.print(forward.item + " ");
-    forward = forward.next;
-  }
-  System.out.println();
-}
+    public boolean isEmpty() {
+        return top == null;
+    }
 
-public Node<T> getTop() {
-  return top;
-}
-
+    public int size() {
+        return size;
+    }
 }

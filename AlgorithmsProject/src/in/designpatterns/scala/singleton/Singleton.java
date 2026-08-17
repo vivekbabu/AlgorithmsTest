@@ -2,7 +2,6 @@ package in.designpatterns.scala.singleton;
 
 public class Singleton {
     private static final Singleton INSTANCE = new Singleton();
-    private int counter = 0;
 
     private Singleton() {}
 
@@ -10,7 +9,5 @@ public class Singleton {
         return INSTANCE;
     }
 
-    public int call() {
-        return ++counter;
-    }
+    public void display() {}
 }

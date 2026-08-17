@@ -1,30 +1,22 @@
 package in.algorithms.findnthlastnode;
 
 import in.algorithms.implementeddatastructures.Node;
-import in.algorithms.implementeddatastructures.Queue;
 
-public class FindNthLastNode<T> {
+public class FindNthLastNode {
+    public static <T> Node<T> findNthLastNode(Node<T> head, int n) {
+        if (head == null || n <= 0) return null;
+        Node<T> p1 = head;
+        Node<T> p2 = head;
 
-public static void main(String[] args) {
-  Queue<Integer> linkedlist = new Queue<Integer>();
-  linkedlist.enqueue(1).enqueue(2).enqueue(3).enqueue(4).enqueue(5);
-  System.out.println(findNthLastNode(linkedlist, 2));
-}
+        for (int i = 0; i < n; i++) {
+            if (p1 == null) return null;
+            p1 = p1.next;
+        }
 
-public static <T> T findNthLastNode(Queue<T> linkedlist, int position) {
-  int i = 0;
-  Node<T> first = linkedlist.getFront();
-  Node<T> forwardPointer = first;
-  while (i < position - 1) {
-    forwardPointer = forwardPointer.next;
-    i++;
-  }
-
-  while (forwardPointer.next != null) {
-    forwardPointer = forwardPointer.next;
-    first = first.next;
-  }
-
-  return first.item;
-}
+        while (p1 != null) {
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return p2;
+    }
 }

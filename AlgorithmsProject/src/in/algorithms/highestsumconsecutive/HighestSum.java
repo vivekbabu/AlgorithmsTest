@@ -1,20 +1,29 @@
 package in.algorithms.highestsumconsecutive;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class HighestSum {
-    public static int highestSum(List<Integer> list, int currentMax, int previous) {
-        int max = 0;
-        for (int i = 0; i < list.size() - 1; i++) {
-            int sum = list.get(i) + list.get(i + 1);
-            if (sum > max) max = sum;
+    public static int highestSum(List<Integer> list, int index, int currentSum) {
+        if (list == null || list.isEmpty()) return 0;
+        int inclusive = list.get(0);
+        int exclusive = 0;
+
+        for (int i = 1; i < list.size(); i++) {
+            int newInclusive = exclusive + list.get(i);
+            exclusive = Math.max(inclusive, exclusive);
+            inclusive = newInclusive;
         }
-        return max;
+        return Math.max(inclusive, exclusive);
     }
 
-    public static void main(String[] args) {
-        List<Integer> list = Arrays.asList(1, 4, 5, 7, 10, 19, 9, 8, 12, 1, 22);
-        System.out.println("Highest sum of 2 consecutive numbers: " + highestSum(list, 0, 0));
+    public static int maxSubArraySumKadane(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int maxSoFar = nums[0];
+        int currMax = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            currMax = Math.max(nums[i], currMax + nums[i]);
+            maxSoFar = Math.max(maxSoFar, currMax);
+        }
+        return maxSoFar;
     }
 }

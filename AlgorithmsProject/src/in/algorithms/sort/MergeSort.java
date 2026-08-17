@@ -1,16 +1,14 @@
 package in.algorithms.sort;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MergeSort {
     public static <T extends Comparable<T>> List<T> mergesort(List<T> list) {
-        int n = list.size();
-        if (n <= 1) return list;
-        int mid = n / 2;
+        if (list == null || list.size() <= 1) return list;
+        int mid = list.size() / 2;
         List<T> left = mergesort(list.subList(0, mid));
-        List<T> right = mergesort(list.subList(mid, n));
+        List<T> right = mergesort(list.subList(mid, list.size()));
         return merge(left, right);
     }
 
@@ -27,10 +25,5 @@ public class MergeSort {
         while (i < left.size()) result.add(left.get(i++));
         while (j < right.size()) result.add(right.get(j++));
         return result;
-    }
-
-    public static void main(String[] args) {
-        List<Integer> numbers = Arrays.asList(4, 2, 9, 6, 23, 12, 34, 0, 1);
-        System.out.println("MergeSorted: " + mergesort(numbers));
     }
 }
