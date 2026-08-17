@@ -6,9 +6,9 @@ import in.algorithms.nextbiggernumber.NextBiggerNumber;
 import in.algorithms.alternate.AlternateNumbers;
 import in.algorithms.secondfrequentnumberinalist.SecondFrequentNumberInAList;
 import in.algorithms.wateralotter.WaterAlotter;
-import scala.collection.JavaConversions;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class MathAndArrayTest {
 
@@ -31,10 +31,8 @@ public class MathAndArrayTest {
 
     @Test
     public void testSecondFrequentNumber() {
-        List<Object> nums = Arrays.asList((Object) 2, 3, 4, 5, 1, 1, 1, 2, 3, 3, 2, 1, 3, 3, 3, 2, 2, 1, 2, 1, 1, 1);
-        scala.Tuple2<Object, Object> result = SecondFrequentNumberInAList.secondFrequentNumberInAList(
-                JavaConversions.asScalaBuffer(nums).toList()
-        );
+        List<Integer> nums = Arrays.asList(2, 3, 4, 5, 1, 1, 1, 2, 3, 3, 2, 1, 3, 3, 3, 2, 2, 1, 2, 1, 1, 1);
+        Map.Entry<Integer, Integer> result = SecondFrequentNumberInAList.secondFrequent(nums);
         Assert.assertNotNull(result);
     }
 

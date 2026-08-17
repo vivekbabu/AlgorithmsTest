@@ -5,13 +5,12 @@ import org.junit.Assert;
 import in.algorithms.list.Cons;
 import in.algorithms.list.Nil;
 import in.algorithms.list.ListUtils;
-import in.algorithms.intsets.Empty$;
+import in.algorithms.intsets.Empty;
 import in.algorithms.intsets.IntSet;
 import in.algorithms.json.JStr;
 import in.algorithms.json.JNum;
 import in.algorithms.json.JSeq;
 import in.algorithms.json.JSONOperations;
-import scala.collection.JavaConversions;
 import java.util.Arrays;
 
 public class FunctionalDataStructuresTest {
@@ -37,7 +36,7 @@ public class FunctionalDataStructuresTest {
 
     @Test
     public void testImmutableIntSet() {
-        IntSet s1 = Empty$.MODULE$;
+        IntSet s1 = Empty.INSTANCE;
         Assert.assertFalse(s1.contains(5));
 
         IntSet s2 = s1.incl(5).incl(10).incl(2);
@@ -46,7 +45,7 @@ public class FunctionalDataStructuresTest {
         Assert.assertTrue(s2.contains(2));
         Assert.assertFalse(s2.contains(7));
 
-        IntSet s3 = Empty$.MODULE$.incl(7).incl(12);
+        IntSet s3 = Empty.INSTANCE.incl(7).incl(12);
         IntSet unionSet = s2.union(s3);
         Assert.assertTrue(unionSet.contains(5));
         Assert.assertTrue(unionSet.contains(7));
@@ -56,15 +55,13 @@ public class FunctionalDataStructuresTest {
     @Test
     public void testJSONAlgebraicDataType() {
         JSeq jsonArray = new JSeq(
-                JavaConversions.asScalaBuffer(
-                        Arrays.asList(
-                                (in.algorithms.json.JSON) new JStr("Antigravity"),
-                                (in.algorithms.json.JSON) new JNum(42.0)
-                        )
-                ).toList()
+                Arrays.asList(
+                        new JStr("Antigravity"),
+                        new JNum(42.0)
+                )
         );
 
         String rendered = JSONOperations.show(jsonArray);
-        Assert.assertNotNull(rendered);
+        Assert.assertEquals("[\"Antigravity\", 42.0]", rendered);
     }
 }

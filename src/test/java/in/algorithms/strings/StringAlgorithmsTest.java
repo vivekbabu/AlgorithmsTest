@@ -6,7 +6,7 @@ import in.algorithms.duplicatecharacters.DuplicateCharacterRemover;
 import in.algorithms.duplicatecharacters.DuplicateCharacterChecker;
 import in.algorithms.java.reversestringwords.ReverseByWord;
 import in.algorithms.stringpermute.StringPermutation;
-import in.algorithms.Palindrome;
+import in.algorithms.palindrome.Palindrome;
 
 public class StringAlgorithmsTest {
 

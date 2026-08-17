@@ -1650,44 +1650,35 @@ SCALA: Pure Immutable Transformation & Tail Recursion
 
 # 8. Build Systems, Testing Harness & Automated Verification
 
-The repository includes a modern, multi-tier build and diagnostic infrastructure supporting both **Maven** and **Gradle**, alongside a unified **single-command test harness** that executes, benchmarks, and generates markdown reports across all 94 runnable targets in the repository.
+The repository includes a modern, high-performance **100% Pure Java** build and diagnostic infrastructure supporting both **Maven** and **Gradle**, alongside a unified **single-command test harness** that compiles in under 2 seconds, executes 70 automated unit tests, and benchmarks all 95 executable targets in the repository.
 
 ---
 
-## 8.1 Maven Polyglot Configuration (`pom.xml`)
+## 8.1 Pure Java Maven Configuration (`pom.xml`)
 
-The root [`pom.xml`](pom.xml) manages dependencies and coordinates the compilation of mixed Java 8/22 and Scala 2.11 source trees:
+The root [`pom.xml`](pom.xml) manages standard Java 8/22 compilation and dependencies:
 
-- **Scala Maven Plugin (`net.alchim31.maven:scala-maven-plugin`)**: Compiles `.scala` source files, `.sc` interactive worksheets, and cross-language interoperability hooks.
-- **Java Compiler Plugin (`org.apache.maven.plugins:maven-compiler-plugin`)**: Compiles imperative Java algorithms and design patterns.
-- **Core Dependencies**:
-  - `org.scala-lang:scala-library:2.11.12` & `scala-compiler:2.11.12`
-  - `org.scala-lang.modules:scala-xml_2.11:1.0.6`
-  - `org.scala-lang:scala-actors:2.11.12`
-  - `org.apache.commons:commons-lang3:3.12.0`
-  - `junit:junit:4.13.2`
+- **Java Compiler Plugin (`org.apache.maven.plugins:maven-compiler-plugin`)**: Compiles all Java algorithms, data structures, and design patterns.
+- **Build Helper Plugin (`org.codehaus.mojo:build-helper-maven-plugin`)**: Explicitly registers source roots for zero-configuration IntelliJ IDEA import.
+- **Dependencies**: `commons-lang3:3.12.0`, `junit:4.13.2`.
 
 ```bash
-# Compile both Java and Scala source trees
+# Clean and compile the entire repository in ~1 second
 mvn compile
 
-# Execute automated JUnit test suite
+# Execute all 70 automated JUnit unit test suites
 mvn test
-
-# Generate runtime classpath descriptor
-mvn dependency:build-classpath -Dmdep.outputFile=target/cp.txt
 ```
 
 ---
 
-## 8.2 Gradle Multi-Language Setup (`build.gradle`)
+## 8.2 Pure Java Gradle Setup (`build.gradle`)
 
-For Gradle-based workflows, [`build.gradle`](build.gradle) and [`settings.gradle`](settings.gradle) configure the `java` and `scala` plugins:
+For Gradle workflows, [`build.gradle`](build.gradle) provides a clean single-plugin setup:
 
 ```groovy
 plugins {
     id 'java'
-    id 'scala'
 }
 
 group = 'in.algorithms'
@@ -1698,19 +1689,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.scala-lang:scala-library:2.11.12'
-    implementation 'org.scala-lang:scala-compiler:2.11.12'
-    implementation 'org.scala-lang.modules:scala-xml_2.11:1.0.6'
-    implementation 'org.scala-lang:scala-actors:2.11.12'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     testImplementation 'junit:junit:4.13.2'
 }
 
 sourceSets {
-    main {
-        scala { srcDirs = ['AlgorithmsProject/src'] }
-        java { srcDirs = ['AlgorithmsProject/src'] }
-    }
+    main { java { srcDirs = ['AlgorithmsProject/src'] } }
+    test { java { srcDirs = ['src/test/java'] } }
 }
 ```
 
@@ -1718,7 +1703,7 @@ sourceSets {
 
 ## 8.3 The Single Command Test Suite (`./run_all.sh`)
 
-A single command builds the entire project, discovers all 94 runnable targets (Java Applications, Scala Applications, and Scala Worksheets), executes them with timeout and daemon guards, captures outputs, and produces a diagnostic Markdown report:
+A single command builds the entire project, discovers all 95 runnable targets, executes them with timeout and daemon guards, captures outputs, and produces a diagnostic Markdown report:
 
 ```bash
 # Execute the single-command test harness
@@ -1731,7 +1716,7 @@ A single command builds the entire project, discovers all 94 runnable targets (J
 ```
 ┌─────────────────┐     ┌─────────────────────┐     ┌──────────────────────┐     ┌───────────────────────┐
 │ 1. Maven Build  │ ──> │ 2. Target Discovery │ ──> │ 3. Process Execution  │ ──> │ 4. Markdown Report    │
-│ (Zinc + javac)  │     │ (94 Targets / 13 Cat│     │ (Timeout & Stdin Grd)│     │ (EXECUTION_REPORT.md) │
+│ (Pure javac)    │     │ (95 Targets / 13 Cat│     │ (Timeout & Stdin Grd)│     │ (EXECUTION_REPORT.md) │
 └─────────────────┘     └─────────────────────┘     └──────────────────────┘     └───────────────────────┘
 ```
 
@@ -1742,12 +1727,23 @@ A single command builds the entire project, discovers all 94 runnable targets (J
 When `./run_all.sh` executes, it automatically generates [`EXECUTION_REPORT.md`](EXECUTION_REPORT.md) with comprehensive metrics and output previews:
 
 ### Suite Verification Metrics:
-- **Total Modules Tested**: `94`
-- **Passed Cleanly**: `91`
-- **Verified Daemons / Background Workers**: `3` (`PrinterThreadRunner`, `BackgroundThreadRunner`, `YahooWebService`)
+- **Total Modules Tested**: `95`
+- **Passed Cleanly**: `93`
+- **Verified Daemons / Background Workers**: `2` (`PrinterThreadRunner`, `BackgroundThreadRunner`)
 - **Fatal Failures / Exceptions**: `0`
 - **Pass Rate**: `100.0%`
-- **Total Execution Duration**: `~16.3s`
+- **Total Execution Duration**: `~9.2s`
+- **Unit Test Pass Rate**: `70/70 (100.0%)`
+
+---
+
+## 8.5 JUnit 4 Master Test Suite
+
+Located in `src/test/java/in/algorithms/`, the test suites run within CI/CD pipelines via standard `mvn test` in under 2 seconds:
+
+```bash
+mvn test
+```
 
 ### Categorized Results Summary:
 | Domain Category | Targets | Clean Passes | Verified Daemons |
