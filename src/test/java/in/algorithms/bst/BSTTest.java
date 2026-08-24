@@ -150,4 +150,116 @@ public class BSTTest {
         List<Integer> list = ConvertToLinkedList.convertToList(sampleBst);
         Assert.assertEquals(Arrays.asList(20, 30, 40, 50, 60, 70, 80), list);
     }
+
+    @Test
+    public void testEmptyTreeOperations() {
+        Assert.assertFalse(BSTOperations.search(null, 5));
+        Assert.assertNull(BSTOperations.findMin(null));
+        Assert.assertNull(BSTOperations.findMax(null));
+        Assert.assertEquals(0, BSTOperations.size(null));
+        Assert.assertEquals(0, BSTOperations.height(null));
+        Assert.assertTrue(BSTOperations.inOrder(null).isEmpty());
+        Assert.assertTrue(CheckIfBST.isBST(null));
+        Assert.assertEquals(Arrays.asList(), AllNodesInADepth.getNodesAtDepth(null, 0));
+        Assert.assertTrue(PrintSpiralModel.spiralOrder(null).isEmpty());
+    }
+
+    @Test
+    public void testInsertingDuplicateValueIsNoOp() {
+        int sizeBefore = BSTOperations.size(sampleBst);
+        BSTOperations.insert(sampleBst, 50); // already present at root
+        Assert.assertEquals(sizeBefore, BSTOperations.size(sampleBst));
+    }
+
+    @Test
+    public void testDeleteNonExistentValueLeavesTreeUnchanged() {
+        int sizeBefore = BSTOperations.size(sampleBst);
+        BSTNode<Integer> updated = BSTOperations.delete(sampleBst, 999);
+        Assert.assertEquals(sizeBefore, BSTOperations.size(updated));
+    }
+
+    @Test
+    public void testDeleteOnlyNodeResultsInEmptyTree() {
+        BSTNode<Integer> single = BSTOperations.insert(null, 42);
+        BSTNode<Integer> updated = BSTOperations.delete(single, 42);
+        Assert.assertNull(updated);
+    }
+
+    @Test
+    public void testAllNodesAtOutOfRangeDepthIsEmpty() {
+        Assert.assertTrue(AllNodesInADepth.getNodesAtDepth(sampleBst, 10).isEmpty());
+    }
+
+    @Test
+    public void testLeastCommonAncestorWhenOneNodeIsAncestorOfOther() {
+        BSTNode<Integer> lca = LeastCommonAncestor.findLCA(sampleBst, 30, 40);
+        Assert.assertEquals(Integer.valueOf(30), lca.value); // 30 is itself the ancestor of 40
+    }
+
+    @Test
+    public void testCheckIfSubtreeIdenticalDirectly() {
+        BSTNode<Integer> a = new BSTNode<>(1, new BSTNode<>(2), new BSTNode<>(3));
+        BSTNode<Integer> b = new BSTNode<>(1, new BSTNode<>(2), new BSTNode<>(3));
+        Assert.assertTrue(CheckIfSubtree.isIdentical(a, b));
+        Assert.assertTrue(CheckIfSubtree.isIdentical(null, null));
+        Assert.assertFalse(CheckIfSubtree.isIdentical(a, null));
+
+        BSTNode<Integer> c = new BSTNode<>(1, new BSTNode<>(2), new BSTNode<>(4));
+        Assert.assertFalse(CheckIfSubtree.isIdentical(a, c));
+    }
+
+    @Test
+    public void testIsSubtreeWithNullSubtreeIsAlwaysTrue() {
+        Assert.assertTrue(CheckIfSubtree.isSubtree(sampleBst, null));
+        Assert.assertFalse(CheckIfSubtree.isSubtree(null, new BSTNode<>(1)));
+    }
+
+    @Test
+    public void testIsMirrorDirectly() {
+        BSTNode<Integer> left = new BSTNode<>(1, new BSTNode<>(2), new BSTNode<>(3));
+        BSTNode<Integer> right = new BSTNode<>(1, new BSTNode<>(3), new BSTNode<>(2));
+        Assert.assertTrue(MirrorImageOfTree.isMirror(left, right));
+        Assert.assertFalse(MirrorImageOfTree.isMirror(left, left));
+        Assert.assertTrue(MirrorImageOfTree.isMirror(null, null));
+    }
+
+    @Test
+    public void testSerializeBinaryTreeDelegatesToSerializeBST() {
+        String serialized = SerializeBinaryTree.serialize(sampleBst);
+        Assert.assertEquals(SerializeBST.serialize(sampleBst), serialized);
+
+        BSTNode<Integer> deserialized = SerializeBinaryTree.deserialize(serialized);
+        Assert.assertEquals(BSTOperations.inOrder(sampleBst), BSTOperations.inOrder(deserialized));
+    }
+
+    @Test
+    public void testSerializeEmptyTreeRoundTrips() {
+        String serialized = SerializeBST.serialize(null);
+        Assert.assertEquals("#,", serialized);
+        Assert.assertNull(SerializeBST.deserialize(serialized));
+    }
+
+    @Test
+    public void testDeserializeNullOrEmptyStringReturnsNull() {
+        Assert.assertNull(SerializeBST.deserialize(null));
+        Assert.assertNull(SerializeBST.deserialize(""));
+    }
+
+    @Test
+    public void testSumOfHigherNumbersOnSingleNode() {
+        BSTNode<Integer> root = new BSTNode<>(7);
+        SumOfHigherNumbers.transformToGreaterSumTree(root);
+        Assert.assertEquals(Integer.valueOf(7), root.value);
+    }
+
+    @Test
+    public void testBSTNodeGetters() {
+        BSTNode<Integer> left = new BSTNode<>(1);
+        BSTNode<Integer> right = new BSTNode<>(3);
+        BSTNode<Integer> node = new BSTNode<>(2, left, right);
+
+        Assert.assertEquals(Integer.valueOf(2), node.getValue());
+        Assert.assertSame(left, node.getLeft());
+        Assert.assertSame(right, node.getRight());
+    }
 }

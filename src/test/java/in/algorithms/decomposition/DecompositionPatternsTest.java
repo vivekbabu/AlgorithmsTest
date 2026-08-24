@@ -42,4 +42,56 @@ public class DecompositionPatternsTest {
         Assert.assertEquals(7, sum.leftOp().numValue());
         Assert.assertEquals(3, sum.rightOp().numValue());
     }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testBadApproachNumberHasNoLeftOperand() {
+        new in.algorithms.decomposition.badapproach.Number(1).leftOp();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testBadApproachSumHasNoNumValue() {
+        in.algorithms.decomposition.badapproach.Expr sum = new in.algorithms.decomposition.badapproach.Sum(
+                new in.algorithms.decomposition.badapproach.Number(1),
+                new in.algorithms.decomposition.badapproach.Number(2));
+        sum.numValue();
+    }
+
+    @Test
+    public void testPolymorphicNestedSumExpression() {
+        in.algorithms.decomposition.polymorphic.Expr expr =
+                new in.algorithms.decomposition.polymorphic.Sum(
+                        new in.algorithms.decomposition.polymorphic.Sum(
+                                new in.algorithms.decomposition.polymorphic.Number(1),
+                                new in.algorithms.decomposition.polymorphic.Number(2)),
+                        new in.algorithms.decomposition.polymorphic.Number(3));
+
+        Assert.assertEquals(6, expr.eval());
+        Assert.assertEquals("1 + 2 + 3", expr.show());
+    }
+
+    @Test
+    public void testCaseSolutionNestedSumExpression() {
+        in.algorithms.decomposition.casesolution.Expr expr =
+                new in.algorithms.decomposition.casesolution.Sum(
+                        new in.algorithms.decomposition.casesolution.Number(4),
+                        new in.algorithms.decomposition.casesolution.Sum(
+                                new in.algorithms.decomposition.casesolution.Number(5),
+                                new in.algorithms.decomposition.casesolution.Number(6)));
+
+        Assert.assertEquals(15, expr.eval());
+        Assert.assertEquals("4 + 5 + 6", expr.show());
+    }
+
+    @Test
+    public void testAllThreeApproachesAgreeOnEvaluatedResult() {
+        int polymorphicResult = new in.algorithms.decomposition.polymorphic.Sum(
+                new in.algorithms.decomposition.polymorphic.Number(2),
+                new in.algorithms.decomposition.polymorphic.Number(3)).eval();
+        int caseSolutionResult = new in.algorithms.decomposition.casesolution.Sum(
+                new in.algorithms.decomposition.casesolution.Number(2),
+                new in.algorithms.decomposition.casesolution.Number(3)).eval();
+
+        Assert.assertEquals(polymorphicResult, caseSolutionResult);
+        Assert.assertEquals(5, polymorphicResult);
+    }
 }

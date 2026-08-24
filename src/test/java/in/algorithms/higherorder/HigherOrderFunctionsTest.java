@@ -33,4 +33,23 @@ public class HigherOrderFunctionsTest {
         int prodResult = SumAndProduct.mapReduce(x -> x, (a, b) -> a * b, 1, 1, 4);
         Assert.assertEquals(24, prodResult);
     }
+
+    @Test
+    public void testEmptyRangeReturnsIdentityValue() {
+        Assert.assertEquals(0, HigherOrderFunctions.sum(x -> x, 5, 1)); // a > b
+        Assert.assertEquals(1, ProductHigherOrderFunction.product(x -> x, 5, 1)); // a > b
+        Assert.assertEquals(-1, SumAndProduct.mapReduce(x -> x, (a, b) -> a + b, -1, 5, 1));
+    }
+
+    @Test
+    public void testSingleElementRange() {
+        Assert.assertEquals(7, HigherOrderFunctions.sum(x -> x, 7, 7));
+        Assert.assertEquals(7, ProductHigherOrderFunction.product(x -> x, 7, 7));
+    }
+
+    @Test
+    public void testMapReduceWithMaxCombiner() {
+        int max = SumAndProduct.mapReduce(x -> x * x, Math::max, Integer.MIN_VALUE, 1, 5);
+        Assert.assertEquals(25, max); // 5^2 is the largest square in [1,5]
+    }
 }

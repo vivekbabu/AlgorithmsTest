@@ -36,4 +36,33 @@ public class ReverseByWordTest {
         String twice = ReverseByWord.reverseByWords(once);
         Assert.assertEquals(original, twice);
     }
+
+    @Test
+    public void testLeadingAndTrailingSpacesArePreserved() {
+        Assert.assertEquals(" cd ab ", ReverseByWord.reverseByWords(" ab cd "));
+    }
+
+    @Test
+    public void testMultipleInternalSpacesArePreserved() {
+        Assert.assertEquals("b  a", ReverseByWord.reverseByWords("a  b"));
+    }
+
+    @Test
+    public void testReverseHelperInPlace() {
+        char[] chars = "hello".toCharArray();
+        ReverseByWord.reverse(chars, 0, chars.length - 1);
+        Assert.assertEquals("olleh", new String(chars));
+    }
+
+    @Test
+    public void testReverseHelperIgnoresInvalidBounds() {
+        char[] chars = "abc".toCharArray();
+        ReverseByWord.reverse(null, 0, 1); // null array is a no-op
+        ReverseByWord.reverse(chars, 2, 1); // first >= last is a no-op
+        Assert.assertEquals("abc", new String(chars));
+
+        ReverseByWord.reverse(chars, -1, 2); // out-of-range first is a no-op
+        ReverseByWord.reverse(chars, 0, 5); // out-of-range last is a no-op
+        Assert.assertEquals("abc", new String(chars));
+    }
 }

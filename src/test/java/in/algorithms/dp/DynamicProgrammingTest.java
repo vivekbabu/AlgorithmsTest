@@ -86,4 +86,74 @@ public class DynamicProgrammingTest {
         Assert.assertEquals(5, StockSeller.maxProfitSingleTransaction(prices)); // Buy at 1, sell at 6
         Assert.assertEquals(7, StockSeller.maxProfitMultipleTransactions(prices)); // (5-1) + (6-3) = 7
     }
+
+    @Test
+    public void testStockSellerEdgeCases() {
+        Assert.assertEquals(0, StockSeller.maxProfitSingleTransaction(null));
+        Assert.assertEquals(0, StockSeller.maxProfitSingleTransaction(new int[]{}));
+        Assert.assertEquals(0, StockSeller.maxProfitSingleTransaction(new int[]{5}));
+        Assert.assertEquals(0, StockSeller.maxProfitSingleTransaction(new int[]{9, 7, 5, 3, 1})); // strictly decreasing
+        Assert.assertEquals(0, StockSeller.maxProfitMultipleTransactions(new int[]{9, 7, 5, 3, 1}));
+    }
+
+    @Test
+    public void testFibonacciEdgeCases() {
+        Assert.assertEquals(0, Fibonacci.fibonacci(0));
+        Assert.assertEquals(0, Fibonacci.fibonacci(-5));
+        Assert.assertEquals(1, Fibonacci.fibonacci(1));
+        Assert.assertEquals(0L, DPFibonacci.fibonacciWithDP(-3));
+    }
+
+    @Test
+    public void testCoinProblemEdgeCases() {
+        List<Integer> coins = Arrays.asList(1, 2, 3);
+        Assert.assertEquals(1, CoinProblem.countNumberOfWays(0, coins));
+        Assert.assertEquals(0, CoinProblem.countNumberOfWays(-1, coins));
+        Assert.assertEquals(0, CoinProblem.countNumberOfWays(5, java.util.Collections.emptyList()));
+
+        // No combination of {5} can make 3 -> unreachable.
+        Assert.assertEquals(-1, CoinProblem.minCoins(3, Arrays.asList(5)));
+    }
+
+    @Test
+    public void testActivitySelectionEdgeCases() {
+        Assert.assertTrue(ActivitySelection.selectActivities(null).isEmpty());
+        Assert.assertTrue(ActivitySelection.selectActivities(Arrays.asList()).isEmpty());
+
+        List<ActivitySelection.Activity> single = Arrays.asList(new ActivitySelection.Activity(0, 5));
+        Assert.assertEquals(1, ActivitySelection.selectActivities(single).size());
+
+        // Fully overlapping activities - only one can be picked.
+        List<ActivitySelection.Activity> overlapping = Arrays.asList(
+                new ActivitySelection.Activity(0, 10),
+                new ActivitySelection.Activity(1, 9),
+                new ActivitySelection.Activity(2, 8));
+        Assert.assertEquals(1, ActivitySelection.selectActivities(overlapping).size());
+    }
+
+    @Test
+    public void testSmallestSubArrayNoValidWindowReturnsZero() {
+        int[] nums = {1, 1, 1};
+        Assert.assertEquals(0, SmallestSubArray.minSubArrayLen(10, nums)); // target unreachable
+        Assert.assertEquals(0, SmallestSubArray.minSubArrayLen(5, new int[]{}));
+        Assert.assertEquals(0, SmallestSubArray.minSubArrayLen(5, null));
+    }
+
+    @Test
+    public void testHighestSumEdgeCases() {
+        Assert.assertEquals(0, HighestSum.highestSum(null, 0, 0));
+        Assert.assertEquals(0, HighestSum.highestSum(Arrays.asList(), 0, 0));
+        Assert.assertEquals(5, HighestSum.highestSum(Arrays.asList(5), 0, 0));
+        // Adjacent elements can't both be picked - taking just the middle 10 beats 3 + 5 = 8.
+        Assert.assertEquals(10, HighestSum.highestSum(Arrays.asList(3, 10, 5), 0, 0));
+
+        Assert.assertEquals(0, HighestSum.maxSubArraySumKadane(null));
+        Assert.assertEquals(0, HighestSum.maxSubArraySumKadane(new int[]{}));
+    }
+
+    @Test
+    public void testLevensteinDistanceEdgeCases() {
+        Assert.assertEquals(0, Levenstein.distance("", ""));
+        Assert.assertEquals(5, Levenstein.distance("hello", ""));
+    }
 }

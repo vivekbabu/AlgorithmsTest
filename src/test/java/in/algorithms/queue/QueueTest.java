@@ -3,6 +3,8 @@ package in.algorithms.queue;
 import in.algorithms.circularqueue.CircularQueue;
 import org.junit.Assert;
 import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class QueueTest {
@@ -77,5 +79,63 @@ public class QueueTest {
         Assert.assertEquals(Integer.valueOf(100), queue.dequeue());
         Assert.assertEquals(Integer.valueOf(200), queue.dequeue());
         Assert.assertTrue(queue.isEmpty());
+    }
+
+    @Test
+    public void testGenericQueueIteratorPreservesFifoOrder() {
+        Queue<Integer> queue = new Queue<>();
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
+
+        List<Integer> collected = new ArrayList<>();
+        for (int value : queue) {
+            collected.add(value);
+        }
+        Assert.assertEquals(java.util.Arrays.asList(1, 2, 3), collected);
+        // Iterating does not consume the queue.
+        Assert.assertEquals(3, queue.size());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testGenericQueueIteratorExhaustionThrows() {
+        Queue<Integer> queue = new Queue<>();
+        queue.enqueue(42);
+        java.util.Iterator<Integer> it = queue.iterator();
+        it.next();
+        it.next(); // no more elements
+    }
+
+    @Test
+    public void testQueueNodeHoldsValueAndLinks() {
+        QueueNode<String> first = new QueueNode<>("first");
+        QueueNode<String> second = new QueueNode<>("second");
+        first.next = second;
+        second.prev = first;
+
+        Assert.assertEquals("first", first.value);
+        Assert.assertSame(second, first.next);
+        Assert.assertSame(first, second.prev);
+        Assert.assertNull(second.next);
+    }
+
+    @Test
+    public void testCircularQueueWrapsAroundMultipleTimes() {
+        CircularQueue<Integer> cq = new CircularQueue<>(2);
+        for (int round = 0; round < 3; round++) {
+            Assert.assertTrue(cq.enqueue(round));
+            Assert.assertEquals(Integer.valueOf(round), cq.dequeue());
+            Assert.assertTrue(cq.isEmpty());
+        }
+    }
+
+    @Test
+    public void testCircularQueueCapacityReporting() {
+        CircularQueue<Integer> cq = new CircularQueue<>(5);
+        Assert.assertEquals(5, cq.getCapacity());
+        cq.enqueue(1);
+        cq.enqueue(2);
+        Assert.assertEquals(2, cq.size());
+        Assert.assertFalse(cq.isFull());
     }
 }

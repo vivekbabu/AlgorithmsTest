@@ -76,4 +76,66 @@ public class GraphAndGridTest {
         Assert.assertTrue(solved);
         Assert.assertEquals(1, sol[3][3]);
     }
+
+    @Test
+    public void testRatInMazeWithNoSolution() {
+        int[][] maze = {
+                {1, 0, 0, 0},
+                {1, 0, 0, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 1}
+        };
+        int[][] sol = new int[4][4];
+        boolean solved = RatMace.solveMaze(maze, sol, 0, 0, 4);
+        Assert.assertFalse(solved);
+    }
+
+    @Test
+    public void testCountIslandsEdgeCases() {
+        Assert.assertEquals(0, CountIslands.countIslands(null));
+        Assert.assertEquals(0, CountIslands.countIslands(new int[0][0]));
+        Assert.assertEquals(0, CountIslands.countIslands(new int[][]{{0, 0}, {0, 0}}));
+
+        // Diagonal connectivity means the whole grid is a single island.
+        int[][] allLand = {{1, 1}, {1, 1}};
+        Assert.assertEquals(1, CountIslands.countIslands(allLand));
+
+        // Diagonally adjacent 1s still count as one island (8-directional DFS).
+        int[][] diagonal = {{1, 0}, {0, 1}};
+        Assert.assertEquals(1, CountIslands.countIslands(diagonal));
+    }
+
+    @Test
+    public void testBFSAndDFSEdgeCases() {
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+        adj.put(0, Arrays.asList(1));
+        adj.put(1, Collections.emptyList());
+        adj.put(2, Arrays.asList(0)); // disconnected from {0,1} for traversal starting at 0
+
+        Assert.assertEquals(Arrays.asList(0, 1), BFS.traverse(adj, 0));
+        Assert.assertEquals(Arrays.asList(0, 1), DFS.traverse(adj, 0));
+
+        Assert.assertTrue(BFS.traverse(adj, 99).isEmpty()); // start node not in graph
+        Assert.assertTrue(DFS.traverse(null, 0).isEmpty());
+        Assert.assertTrue(BFS.traverse(null, 0).isEmpty());
+    }
+
+    @Test
+    public void testQuickFindUnionOfAlreadyConnectedNodesIsNoOp() {
+        QuickFind qf = new QuickFind(5);
+        qf.union(1, 2);
+        int countAfterFirstUnion = qf.count();
+
+        qf.union(1, 2); // already connected
+        Assert.assertEquals(countAfterFirstUnion, qf.count());
+        Assert.assertEquals(qf.find(1), qf.find(2));
+    }
+
+    @Test
+    public void testNQueensBaseCases() {
+        Assert.assertEquals(1, NQueens.queens(1).size());
+        Assert.assertEquals(0, NQueens.queens(2).size()); // no solution for n=2
+        Assert.assertEquals(0, NQueens.queens(3).size()); // no solution for n=3
+        Assert.assertEquals(Arrays.asList(0), NQueens.queens(1).get(0));
+    }
 }

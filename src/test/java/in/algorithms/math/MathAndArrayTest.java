@@ -19,6 +19,7 @@ import in.algorithms.wordcount.WordCount;
 import org.junit.Assert;
 import org.junit.Test;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,22 @@ public class MathAndArrayTest {
         AlternateNumbers alternater = new AlternateNumbers();
         Integer[] arr = {-5, -2, 5, 2, 4, 7, 1, 8, 0, -8};
         alternater.alternateTheNumbers(arr);
-        Assert.assertNotNull(arr);
+        Assert.assertArrayEquals(new Integer[]{2, -2, 4, -5, 7, -8, 1, 8, 0, 5}, arr);
+    }
+
+    @Test
+    public void testAlternateNumbersEdgeCases() {
+        AlternateNumbers alternater = new AlternateNumbers();
+
+        alternater.alternateTheNumbers(null); // no exception
+
+        Integer[] single = {5};
+        alternater.alternateTheNumbers(single);
+        Assert.assertArrayEquals(new Integer[]{5}, single); // length <= 1 is a no-op
+
+        Integer[] moreNegatives = {-1, -2, -3, 4, 5};
+        alternater.alternateTheNumbers(moreNegatives);
+        Assert.assertArrayEquals(new Integer[]{4, -2, 5, -1, -3}, moreNegatives);
     }
 
     @Test
@@ -136,5 +152,140 @@ public class MathAndArrayTest {
         Assert.assertEquals(new Rationals(1, 6), r1.sub(r2));
         Assert.assertEquals(new Rationals(1, 6), r1.mul(r2));
         Assert.assertEquals(new Rationals(3, 2), r1.div(r2));
+    }
+
+    @Test
+    public void testRationalsNormalizesSignAndReduces() {
+        Assert.assertEquals("-1/2", new Rationals(1, -2).toString());
+        Assert.assertEquals("1/2", new Rationals(-1, -2).toString());
+        Assert.assertEquals("2/3", new Rationals(4, 6).toString()); // reduced via gcd
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRationalsZeroDenominatorThrows() {
+        new Rationals(1, 0);
+    }
+
+    @Test
+    public void testRationalsEqualsAndHashCode() {
+        Rationals a = new Rationals(1, 2);
+        Rationals b = new Rationals(2, 4); // reduces to the same value
+        Assert.assertEquals(a, b);
+        Assert.assertEquals(a.hashCode(), b.hashCode());
+        Assert.assertNotEquals(a, new Rationals(1, 3));
+        Assert.assertNotEquals(a, "1/2");
+    }
+
+    @Test
+    public void testNextBiggerNumberEdgeCases() {
+        Assert.assertNull(NextBiggerNumber.getNextBiggerNumber(null));
+        Assert.assertNull(NextBiggerNumber.getNextBiggerNumber(9L)); // single digit, no higher permutation
+        Assert.assertNull(NextBiggerNumber.getNextBiggerNumber(111L)); // all identical digits
+        Assert.assertEquals(Long.valueOf(21), NextBiggerNumber.getNextBiggerNumber(12L));
+    }
+
+    @Test
+    public void testCombinationsEdgeCases() {
+        Assert.assertTrue(AllCombination.generateCombinations(null).isEmpty());
+
+        List<List<Integer>> emptyInputCombos = AllCombination.generateCombinations(Collections.emptyList());
+        Assert.assertEquals(1, emptyInputCombos.size()); // just the empty combination
+        Assert.assertTrue(emptyInputCombos.get(0).isEmpty());
+    }
+
+    @Test
+    public void testPairsAndTripletsWithSumZeroEdgeCases() {
+        Assert.assertTrue(CWithSumZero.findPairsWithSumZero(null).isEmpty());
+        Assert.assertTrue(CWithSumZero.findPairsWithSumZero(Arrays.asList(1, 2, 3)).isEmpty());
+
+        Assert.assertTrue(TripletsWithSumZero.findTripletsWithSumZero(null).isEmpty());
+        Assert.assertTrue(TripletsWithSumZero.findTripletsWithSumZero(Arrays.asList(1, 2)).isEmpty()); // < 3 elements
+
+        List<List<Integer>> triplets = TripletsWithSumZero.findTripletsWithSumZero(Arrays.asList(-1, 0, 1, 2, -1, -4));
+        Assert.assertEquals(2, triplets.size());
+        Assert.assertTrue(triplets.contains(Arrays.asList(-1, -1, 2)));
+        Assert.assertTrue(triplets.contains(Arrays.asList(-1, 0, 1)));
+    }
+
+    @Test
+    public void testPairWithSumXNoMatchesAndNullArray() {
+        Assert.assertTrue(PairWithSumX.findPairs(null, 10).isEmpty());
+        Assert.assertTrue(PairWithSumX.findPairs(new int[]{1, 2, 3}, 100).isEmpty());
+    }
+
+    @Test
+    public void testPrefixSumEdgeCases() {
+        Assert.assertNull(SumUptoThePoint.prefixSum(null));
+        Assert.assertArrayEquals(new int[]{}, SumUptoThePoint.prefixSum(new int[]{}));
+        Assert.assertArrayEquals(new int[]{-1, -3}, SumUptoThePoint.prefixSum(new int[]{-1, -2}));
+    }
+
+    @Test
+    public void testRotatedArraySearchEdgeCases() {
+        Assert.assertEquals(-1, RotatedArray.search(null, 5));
+        Assert.assertEquals(-1, RotatedArray.search(new int[]{}, 5));
+        Assert.assertEquals(0, RotatedArray.search(new int[]{5}, 5));
+        Assert.assertEquals(-1, RotatedArray.search(new int[]{5}, 9));
+    }
+
+    @Test
+    public void testSecondFrequentNumberWithSingleDistinctValue() {
+        // Only one distinct value exists, so it is returned even though it's not truly "second".
+        Map.Entry<Integer, Integer> entry = SecondFrequentNumberInAList.secondFrequent(Arrays.asList(7, 7, 7));
+        Assert.assertEquals(Integer.valueOf(7), entry.getKey());
+        Assert.assertEquals(Integer.valueOf(3), entry.getValue());
+    }
+
+    @Test
+    public void testSecondFrequentNumberEmptyOrNullReturnsNull() {
+        Assert.assertNull(SecondFrequentNumberInAList.secondFrequent(null));
+        Assert.assertNull(SecondFrequentNumberInAList.secondFrequent(Collections.emptyList()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSquareRootOfNegativeThrows() {
+        SquareRoot.sqrt(-4.0);
+    }
+
+    @Test
+    public void testSquareRootOfNonPerfectSquare() {
+        Assert.assertEquals(1.41421356, SquareRoot.sqrt(2.0), 0.0001);
+    }
+
+    @Test
+    public void testWaterAllotterOverflowSpillsIntoLowerRow() {
+        WaterAlotter allotter = new WaterAlotter();
+        Map<Integer, Double> glasses = allotter.allotWater(4, 2, 1.0);
+        // With 4 units poured into a 2-row pyramid capped at 1.0, all three glasses fill exactly.
+        Assert.assertEquals(1.0, glasses.get(1), 0.001);
+        Assert.assertEquals(1.0, glasses.get(2), 0.001);
+        Assert.assertEquals(1.0, glasses.get(3), 0.001);
+    }
+
+    @Test
+    public void testRoomAllotterNoOverlapNeedsOneRoom() {
+        int[] start = {1, 5, 9};
+        int[] end = {3, 7, 11};
+        Assert.assertEquals(1, RoomAlotter.minMeetingRooms(start, end));
+    }
+
+    @Test
+    public void testRoomAllotterFullOverlapNeedsRoomPerMeeting() {
+        int[] start = {1, 1, 1};
+        int[] end = {5, 5, 5};
+        Assert.assertEquals(3, RoomAlotter.minMeetingRooms(start, end));
+    }
+
+    @Test
+    public void testWordCountWithPunctuationAndCase() {
+        Map<String, Integer> counts = WordCount.countWords("Hello, world! Hello-world.");
+        Assert.assertEquals(Integer.valueOf(2), counts.get("hello"));
+        Assert.assertEquals(Integer.valueOf(2), counts.get("world"));
+    }
+
+    @Test
+    public void testWordCountNullAndBlankReturnEmptyMap() {
+        Assert.assertTrue(WordCount.countWords(null).isEmpty());
+        Assert.assertTrue(WordCount.countWords("   ").isEmpty());
     }
 }

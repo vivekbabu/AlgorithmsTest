@@ -1,6 +1,7 @@
 package in.algorithms.strings;
 
 import in.algorithms.anagram.AnagramChecking;
+import in.algorithms.balanced.BalancedExpression;
 import in.algorithms.duplicatecharacters.DuplicateCharacterChecker;
 import in.algorithms.duplicatecharacters.DuplicateCharacterRemover;
 import in.algorithms.kmpalgorithm.KMPAlgorithm;
@@ -64,5 +65,77 @@ public class StringAlgorithmsTest {
     public void testReplaceSpaces() {
         Assert.assertEquals("Hello%20World", ReplaceSpaces.replaceSpaces("Hello World"));
         Assert.assertEquals("%20%20", ReplaceSpaces.replaceSpaces("  "));
+        Assert.assertNull(ReplaceSpaces.replaceSpaces(null));
+        Assert.assertEquals("NoSpaces", ReplaceSpaces.replaceSpaces("NoSpaces"));
+        Assert.assertEquals("", ReplaceSpaces.replaceSpaces(""));
+    }
+
+    @Test
+    public void testBalancedExpression() {
+        Assert.assertTrue(BalancedExpression.isBalanced("()"));
+        Assert.assertTrue(BalancedExpression.isBalanced("({[]})"));
+        Assert.assertTrue(BalancedExpression.isBalanced("[()()]{}"));
+        Assert.assertTrue(BalancedExpression.isBalanced(""));
+        Assert.assertTrue(BalancedExpression.isBalanced(null));
+
+        Assert.assertFalse(BalancedExpression.isBalanced("(]"));
+        Assert.assertFalse(BalancedExpression.isBalanced("(()"));
+        Assert.assertFalse(BalancedExpression.isBalanced("())"));
+        Assert.assertFalse(BalancedExpression.isBalanced("{[(])}"));
+        Assert.assertFalse(BalancedExpression.isBalanced(")("));
+    }
+
+    @Test
+    public void testKMPAlgorithmNoMatchAndMultipleMatches() {
+        Assert.assertTrue(KMPAlgorithm.search("XYZ", "ABABDABACDABABCABAB").isEmpty());
+        Assert.assertTrue(KMPAlgorithm.search("", "ABC").isEmpty());
+        Assert.assertTrue(KMPAlgorithm.search("ABC", "").isEmpty());
+        Assert.assertTrue(KMPAlgorithm.search(null, "ABC").isEmpty());
+
+        List<Integer> repeatedMatches = KMPAlgorithm.search("AA", "AAAA");
+        Assert.assertEquals(Arrays.asList(0, 1, 2), repeatedMatches);
+    }
+
+    @Test
+    public void testAnagramCheckingEdgeCases() {
+        Assert.assertFalse(AnagramChecking.isAnagram(null, "abc"));
+        Assert.assertFalse(AnagramChecking.isAnagram("abc", null));
+        Assert.assertTrue(AnagramChecking.isAnagram("", ""));
+        Assert.assertFalse(AnagramChecking.isAnagram("abc", "ab"));
+        Assert.assertTrue(AnagramChecking.isAnagram("a", "A"));
+    }
+
+    @Test
+    public void testDuplicateCharacterEdgeCases() {
+        Assert.assertFalse(DuplicateCharacterChecker.checkIfContainsDuplicateCharacters(null));
+        Assert.assertFalse(DuplicateCharacterChecker.checkIfContainsDuplicateCharacters(""));
+
+        DuplicateCharacterRemover remover = new DuplicateCharacterRemover();
+        Assert.assertNull(remover.removeDuplicateCharacters(null));
+        Assert.assertEquals("", remover.removeDuplicateCharacters(""));
+    }
+
+    @Test
+    public void testPalindromeEdgeCases() {
+        Assert.assertFalse(Palindrome.palindromeCheck(null));
+        Assert.assertTrue(Palindrome.palindromeCheck("aa"));
+        Assert.assertFalse(Palindrome.palindromeCheck("ab"));
+        Assert.assertTrue(Palindrome.palindromeCheck("wasitacaroracatisaw")); // case-sensitive, no normalization
+    }
+
+    @Test
+    public void testStringPermutationsSingleAndDuplicateCharacters() {
+        StringPermutation permuter = new StringPermutation();
+
+        List<String> single = permuter.permute("A".toCharArray(), 0, 0);
+        Assert.assertEquals(Arrays.asList("A"), single);
+
+        // Repeated characters still generate one permutation per position arrangement,
+        // even though several results are textually identical.
+        List<String> duplicates = permuter.permute("AAB".toCharArray(), 0, 2);
+        Assert.assertEquals(6, duplicates.size());
+        Assert.assertTrue(duplicates.contains("AAB"));
+        Assert.assertTrue(duplicates.contains("ABA"));
+        Assert.assertTrue(duplicates.contains("BAA"));
     }
 }

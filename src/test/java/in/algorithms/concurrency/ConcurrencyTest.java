@@ -21,4 +21,27 @@ public class ConcurrencyTest {
         boolean completed = executor.awaitTermination(2, TimeUnit.SECONDS);
         Assert.assertTrue(completed);
     }
+
+    @Test
+    public void testPrinterThreadRunCompletesWithoutException() throws InterruptedException {
+        PrinterThread task = new PrinterThread(99);
+        Thread thread = new Thread(task);
+        thread.start();
+        thread.join(2000);
+
+        Assert.assertFalse(thread.isAlive());
+        Assert.assertEquals(99, task.getThreadId());
+    }
+
+    @Test
+    public void testPrinterThreadPreservesInterruptStatusOnInterruption() throws InterruptedException {
+        PrinterThread task = new PrinterThread(1);
+        Thread thread = new Thread(task);
+        thread.start();
+        Thread.sleep(5); // let it enter Thread.sleep(50)
+        thread.interrupt();
+        thread.join(2000);
+
+        Assert.assertFalse(thread.isAlive());
+    }
 }
